@@ -32,14 +32,14 @@ export default function Navbar() {
   return (
     <>
       {/* Navbar Header */}
-      <header className="fixed top-0 left-0 right-0 z-[100] w-full bg-black/70 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-[100] w-full bg-black/80 backdrop-blur-md border-b border-white/10 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between min-h-[60px]">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
             <div className="w-8 h-8 rounded-lg bg-phosphor/10 border border-phosphor/30 flex items-center justify-center">
               <Terminal className="w-4 h-4 text-phosphor" />
             </div>
-            <span className="font-display font-semibold text-white tracking-tight hidden sm:inline">
+            <span className="font-display font-semibold text-white tracking-tight text-sm md:text-base">
               aman<span className="text-phosphor">shah</span>.dev
             </span>
           </Link>
@@ -73,7 +73,7 @@ export default function Navbar() {
           {/* Mobile Hamburger Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-phosphor/20 hover:bg-phosphor/30 text-white transition-colors"
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-phosphor/20 hover:bg-phosphor/30 text-white transition-colors border border-phosphor/30"
             aria-label="Toggle menu"
             type="button"
           >
@@ -88,8 +88,8 @@ export default function Navbar() {
 
       {/* Mobile Menu - Simple Conditional Rendering */}
       {mobileOpen && (
-        <div className="fixed top-[65px] left-0 right-0 z-[99] bg-black/95 border-b border-white/10 md:hidden">
-          <nav className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-2">
+        <div className="fixed top-[60px] left-0 right-0 z-[99] bg-black/95 border-b border-white/10 md:hidden shadow-lg">
+          <nav className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex flex-col gap-2">
             {navLinks.map((link) => (
               <NavLink
                 key={link.path}
