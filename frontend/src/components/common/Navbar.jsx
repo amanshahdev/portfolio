@@ -100,75 +100,54 @@ export default function Navbar() {
           </nav>
 
           {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen((v) => !v)}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-white/20 text-white hover:bg-white/30 transition-colors duration-200"
-            aria-label="Toggle menu"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={mobileOpen ? "close" : "open"}
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                {mobileOpen ? (
-                  <X className="w-5 h-5 text-white" />
-                ) : (
-                  <Menu className="w-5 h-5 text-white" />
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={() => setMobileOpen((v) => !v)}
+              className="w-10 h-10 flex items-center justify-center rounded-lg bg-white/20 text-white hover:bg-white/30"
+              aria-label="Toggle menu"
+              type="button"
+            >
+              {mobileOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-x-0 top-[60px] z-[99] bg-black/90 backdrop-blur-xl border-b border-white/10 md:hidden"
-          >
-            <nav className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-1">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.path}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06 }}
-                >
-                  <NavLink
-                    to={link.path}
-                    end={link.path === "/"}
-                    className={({ isActive }) =>
-                      `block px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 ${
-                        isActive
-                          ? "text-white bg-white/20"
-                          : "text-white/70 hover:text-white hover:bg-white/10"
-                      }`
-                    }
-                  >
-                    {link.label}
-                  </NavLink>
-                </motion.div>
-              ))}
-              <div className="mt-4 pt-4 border-t border-white/10">
-                <Link
-                  to="/admin/login"
-                  className="block px-4 py-3 text-xs font-mono text-white/50 hover:text-white hover:bg-white/10 transition-colors duration-200 tracking-widest uppercase"
-                >
-                  Admin Panel →
-                </Link>
-              </div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {mobileOpen && (
+        <div className="fixed inset-x-0 top-[60px] z-[99] bg-black/90 border-b border-white/10 md:hidden pt-4 pb-4">
+          <nav className="max-w-7xl mx-auto px-6 flex flex-col gap-1">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                end={link.path === "/"}
+                className={({ isActive }) =>
+                  `block px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                    isActive
+                      ? "text-white bg-white/20"
+                      : "text-white/70 hover:text-white hover:bg-white/10"
+                  }`
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+            <div className="mt-4 pt-4 border-t border-white/10">
+              <Link
+                to="/admin/login"
+                className="block px-4 py-3 text-xs font-mono text-white/50 hover:text-white hover:bg-white/10 transition-colors duration-200 tracking-widest uppercase"
+              >
+                Admin Panel →
+              </Link>
+            </div>
+          </nav>
+        </div>
+      )}
     </>
   );
 }
