@@ -39,8 +39,8 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 w-full ${
           scrolled
-            ? "py-3 bg-void/90 backdrop-blur-xl border-b border-border-1 shadow-lg"
-            : "py-4 bg-void-1 md:bg-transparent md:py-5 border-b border-border-1/50 md:border-b-0"
+            ? "py-3 bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg"
+            : "py-4 bg-black/70 md:bg-transparent md:py-5 border-b border-white/10 md:border-b-0"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -102,7 +102,7 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-phosphor/10 border border-phosphor/20 text-white hover:bg-phosphor/20 transition-colors duration-200"
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-white/20 text-white hover:bg-white/30 transition-colors duration-200"
             aria-label="Toggle menu"
           >
             <AnimatePresence mode="wait">
@@ -132,7 +132,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-x-0 top-[60px] z-[99] bg-void-1/95 backdrop-blur-xl border-b border-border-1 md:hidden"
+            className="fixed inset-x-0 top-[60px] z-[99] bg-black/90 backdrop-blur-xl border-b border-white/10 md:hidden"
           >
             <nav className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-1">
               {navLinks.map((link, i) => (
@@ -148,8 +148,8 @@ export default function Navbar() {
                     className={({ isActive }) =>
                       `block px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 ${
                         isActive
-                          ? "text-phosphor bg-phosphor-glow"
-                          : "text-white/60 hover:text-white hover:bg-surface-1"
+                          ? "text-white bg-white/20"
+                          : "text-white/70 hover:text-white hover:bg-white/10"
                       }`
                     }
                   >
@@ -157,10 +157,10 @@ export default function Navbar() {
                   </NavLink>
                 </motion.div>
               ))}
-              <div className="mt-4 pt-4 border-t border-border-1">
+              <div className="mt-4 pt-4 border-t border-white/10">
                 <Link
                   to="/admin/login"
-                  className="block px-4 py-3 text-xs font-mono text-white/30 hover:text-phosphor/70 transition-colors duration-200 tracking-widest uppercase"
+                  className="block px-4 py-3 text-xs font-mono text-white/50 hover:text-white hover:bg-white/10 transition-colors duration-200 tracking-widest uppercase"
                 >
                   Admin Panel →
                 </Link>
