@@ -101,7 +101,7 @@ export default function SkillsSection() {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
 
   return (
-    <section ref={ref} className="py-8 relative">
+    <section ref={ref} className="py-4 relative">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
           className="absolute top-1/2 right-0 w-[400px] h-[400px] rounded-full opacity-[0.05]"

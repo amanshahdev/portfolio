@@ -43,16 +43,19 @@ export default function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
             ? "py-3 bg-void/80 backdrop-blur-xl border-b border-border-1 shadow-lg"
-            : "py-5 md:bg-transparent bg-void/80 backdrop-blur-xl md:backdrop-blur-none md:border-b-0 border-b border-border-1/50"
+            : "py-5 md:bg-transparent bg-void-1/95 backdrop-blur-xl md:backdrop-blur-none border-b md:border-b-0 border-border-1/30"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
+          <Link
+            to="/"
+            className="flex items-center gap-2.5 group flex-shrink-0"
+          >
             <div className="w-8 h-8 rounded-lg bg-phosphor/10 border border-phosphor/30 flex items-center justify-center transition-all duration-300 group-hover:bg-phosphor/20 group-hover:shadow-phosphor">
               <Terminal className="w-4 h-4 text-phosphor" />
             </div>
-            <span className="font-display font-semibold text-white tracking-tight">
+            <span className="font-display font-semibold text-white tracking-tight hidden sm:inline">
               aman<span className="text-phosphor">shah</span>.dev
             </span>
           </Link>
@@ -102,7 +105,7 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg glass transition-colors duration-200 hover:bg-surface-2"
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-phosphor/10 border border-phosphor/20 text-white hover:bg-phosphor/20 transition-colors duration-200"
             aria-label="Toggle menu"
           >
             <AnimatePresence mode="wait">
