@@ -36,6 +36,8 @@ const allowedOrigins = [
   process.env.FRONTEND_URL || "http://localhost:5173",
   "http://localhost:3000",
   "http://localhost:5173",
+  "https://amanshah-dev.vercel.app",
+  /\.vercel\.app$/, // Allow all Vercel preview deployments
 ];
 
 app.use(
@@ -43,7 +45,18 @@ app.use(
     origin: function (origin, callback) {
       // allow requests with no origin (mobile apps, curl, Postman)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1) {
+
+      // Check if origin matches any allowed pattern
+      const isAllowed = allowedOrigins.some((allowed) => {
+        if (typeof allowed === "string") {
+          return origin === allowed;
+        } else if (allowed instanceof RegExp) {
+          return allowed.test(origin);
+        }
+        return false;
+      });
+
+      if (isAllowed) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -52,7 +65,7 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 // ── Rate limiting ──────────────────────────────────────────────────────────
@@ -61,13 +74,19 @@ const limiter = rateLimit({
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { success: false, message: "Too many requests, please try again later." },
+  message: {
+    success: false,
+    message: "Too many requests, please try again later.",
+  },
 });
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
-  message: { success: false, message: "Too many login attempts, please try again later." },
+  message: {
+    success: false,
+    message: "Too many login attempts, please try again later.",
+  },
 });
 
 app.use("/api/", limiter);
@@ -111,11 +130,15 @@ app.use((err, req, res, next) => {
 
   if (err.name === "ValidationError") {
     const messages = Object.values(err.errors).map((e) => e.message);
-    return res.status(400).json({ success: false, message: messages.join(", ") });
+    return res
+      .status(400)
+      .json({ success: false, message: messages.join(", ") });
   }
 
   if (err.code === 11000) {
-    return res.status(400).json({ success: false, message: "Duplicate field value entered" });
+    return res
+      .status(400)
+      .json({ success: false, message: "Duplicate field value entered" });
   }
 
   if (err.name === "JsonWebTokenError") {
@@ -127,12 +150,17 @@ app.use((err, req, res, next) => {
   }
 
   if (err.message === "Not allowed by CORS") {
-    return res.status(403).json({ success: false, message: "CORS error: origin not allowed" });
+    return res
+      .status(403)
+      .json({ success: false, message: "CORS error: origin not allowed" });
   }
 
   res.status(err.status || 500).json({
     success: false,
-    message: process.env.NODE_ENV === "production" ? "Internal server error" : err.message,
+    message:
+      process.env.NODE_ENV === "production"
+        ? "Internal server error"
+        : err.message,
   });
 });
 
@@ -146,7 +174,9 @@ mongoose
   .then(() => {
     console.log("✅ MongoDB connected");
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+      console.log(
+        `🚀 Server running on port ${PORT} in ${process.env.NODE_ENV} mode`,
+      );
     });
   })
   .catch((err) => {
