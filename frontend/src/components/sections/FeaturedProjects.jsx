@@ -150,7 +150,7 @@ export default function FeaturedProjects() {
 
   return (
     <section ref={ref} className="py-16">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

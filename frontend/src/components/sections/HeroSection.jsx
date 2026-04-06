@@ -53,28 +53,28 @@ export default function HeroSection() {
 
       {/* Orbs */}
       <div
-        className="absolute top-1/4 -left-40 w-[600px] h-[600px] rounded-full opacity-[0.07]"
+        className="absolute top-1/4 -left-20 md:-left-40 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full opacity-[0.07]"
         style={{
           background: "radial-gradient(circle, #7c3aed 0%, transparent 70%)",
           animation: "float 8s ease-in-out infinite",
         }}
       />
       <div
-        className="absolute bottom-1/4 -right-40 w-[500px] h-[500px] rounded-full opacity-[0.07]"
+        className="absolute bottom-1/4 -right-20 md:-right-40 w-[250px] md:w-[500px] h-[250px] md:h-[500px] rounded-full opacity-[0.07]"
         style={{
           background: "radial-gradient(circle, #00ff88 0%, transparent 70%)",
           animation: "float 10s ease-in-out infinite reverse",
         }}
       />
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.03]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] rounded-full opacity-[0.03]"
         style={{
           background: "radial-gradient(circle, #38bdf8 0%, transparent 60%)",
         }}
       />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-0">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-0">
         <motion.div
           variants={containerVariants}
           initial="hidden"

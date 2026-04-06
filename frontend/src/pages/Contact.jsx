@@ -40,7 +40,11 @@ const contactInfo = [
 
 const socials = [
   { icon: Github, label: "GitHub", href: "https://github.com/amanshahdev" },
-  { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/amanshah-dev/" },
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/amanshah-dev/",
+  },
 ];
 
 const initialForm = { name: "", email: "", subject: "", message: "" };
@@ -109,7 +113,7 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen pt-28 pb-20">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <AnimatedSection>
           <span className="section-label">

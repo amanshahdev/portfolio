@@ -31,7 +31,7 @@ function ServicesSection() {
 
   return (
     <section ref={ref} className="py-32 border-y border-border-1 bg-surface-1">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
           {services.map((service, i) => (
             <motion.div
@@ -73,7 +73,7 @@ function CTASection() {
 
   return (
     <section ref={ref} className="py-16">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}

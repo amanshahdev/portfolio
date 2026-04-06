@@ -108,7 +108,7 @@ function AnimatedSection({ children, delay = 0 }) {
 export default function About() {
   return (
     <div className="min-h-screen pt-28 pb-20">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         {/* ── Hero Bio ──────────────────────────────────────────────── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-32 items-center">
           <AnimatedSection>

@@ -29,7 +29,7 @@ export default function Footer() {
       {/* Subtle top glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px bg-gradient-to-r from-transparent via-phosphor/20 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
