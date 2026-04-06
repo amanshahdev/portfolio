@@ -36,14 +36,11 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      <header
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 w-full ${
           scrolled
-            ? "py-3 bg-void/80 backdrop-blur-xl border-b border-border-1 shadow-lg"
-            : "py-5 md:bg-transparent bg-void-1/95 backdrop-blur-xl md:backdrop-blur-none border-b md:border-b-0 border-border-1/30"
+            ? "py-3 bg-void/90 backdrop-blur-xl border-b border-border-1 shadow-lg"
+            : "py-4 bg-void-1 md:bg-transparent md:py-5 border-b border-border-1/50 md:border-b-0"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -125,7 +122,7 @@ export default function Navbar() {
             </AnimatePresence>
           </button>
         </div>
-      </motion.header>
+      </header>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -135,7 +132,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-x-0 top-[65px] z-40 bg-void-1/95 backdrop-blur-xl border-b border-border-1 md:hidden"
+            className="fixed inset-x-0 top-[60px] z-[99] bg-void-1/95 backdrop-blur-xl border-b border-border-1 md:hidden"
           >
             <nav className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-1">
               {navLinks.map((link, i) => (
