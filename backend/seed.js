@@ -29,14 +29,26 @@ const seedDB = async () => {
     await Contact.deleteMany({});
     console.log("🗑️  Cleared existing data");
 
-    // Create admin user
-    const admin = await User.create({
-      name: "Aman Shah",
-      email: process.env.ADMIN_EMAIL || "amanshah.dev@gmail.com",
-      password: process.env.ADMIN_PASSWORD || "Admin@123456",
-      role: "admin",
-    });
-    console.log(`👤 Admin created: ${admin.email}`);
+    // Create admin users
+    const admins = [
+      {
+        name: "Aman Shah",
+        email: process.env.ADMIN_EMAIL || "amanshah.dev@gmail.com",
+        password: process.env.ADMIN_PASSWORD || "Admin@123456",
+        role: "admin",
+      },
+      {
+        name: "Aman Shah II",
+        email: process.env.ADMIN_EMAIL_2 || "admin2@amanshah.dev",
+        password: process.env.ADMIN_PASSWORD_2 || "Admin@654321",
+        role: "admin",
+      },
+    ];
+
+    const createdAdmins = await User.create(admins);
+    createdAdmins.forEach((admin) =>
+      console.log(`👤 Admin created: ${admin.email}`),
+    );
 
     // Create sample projects
     await Project.insertMany(sampleProjects);
@@ -52,9 +64,14 @@ const seedDB = async () => {
     console.log("📧 Sample contact message created");
 
     console.log("\n✨ Database seeded successfully!");
-    console.log(
-      `\nAdmin credentials:\n  Email: ${admin.email}\n  Password: ${process.env.ADMIN_PASSWORD || "Admin@123456"}`,
-    );
+    console.log(`\nAdmin credentials:`);
+    createdAdmins.forEach((admin) => {
+      const defaultPassword =
+        admin.email === (process.env.ADMIN_EMAIL || "amanshah.dev@gmail.com")
+          ? process.env.ADMIN_PASSWORD || "Admin@123456"
+          : process.env.ADMIN_PASSWORD_2 || "Admin@654321";
+      console.log(`  Email: ${admin.email}\n  Password: ${defaultPassword}`);
+    });
   } catch (err) {
     console.error("❌ Seed error:", err.message);
   } finally {
