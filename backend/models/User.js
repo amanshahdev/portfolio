@@ -1,0 +1,78 @@
+/**
+ * models/User.js — Mongoose schema for admin users.
+ *
+ * WHAT: Defines the User document structure stored in MongoDB.
+ *       Stores hashed passwords (never plain text), role, and timestamps.
+ *
+ * HOW:  Pre-save hook automatically bcrypt-hashes the password when it
+ *       changes. Instance method comparePassword() allows safe comparison.
+ *       toJSON() transform strips the password from API responses.
+ *
+ * WHY:  Encapsulating auth logic in the model keeps controllers lean and
+ *       guarantees no route can accidentally expose or skip hashing.
+ */
+
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      trim: true,
+      maxlength: [50, "Name cannot exceed 50 characters"],
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+      minlength: [8, "Password must be at least 8 characters"],
+      select: false, // never returned in queries by default
+    },
+    role: {
+      type: String,
+      enum: ["admin"],
+      default: "admin",
+    },
+    lastLogin: {
+      type: Date,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+// ── Hash password before saving ────────────────────────────────────────────
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  try {
+    const salt = await bcrypt.genSalt(12);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+// ── Instance method: compare plain text vs hash ────────────────────────────
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
+// ── Strip password from JSON output ───────────────────────────────────────
+userSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
+
+module.exports = mongoose.model("User", userSchema);
