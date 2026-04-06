@@ -170,24 +170,6 @@ export default function HeroSection() {
           </motion.div>
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-      >
-        <span className="text-xs font-mono text-white/20 tracking-widest uppercase">
-          Scroll
-        </span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <ChevronDown className="w-4 h-4 text-white/20" />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }
