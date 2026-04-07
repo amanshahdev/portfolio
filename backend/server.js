@@ -37,6 +37,8 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5173",
   "https://amanshah-dev.vercel.app",
+  "https://aman-shah.com.np",
+  "https://www.aman-shah.com.np",
   /\.vercel\.app$/, // Allow all Vercel preview deployments
 ];
 
