@@ -15,7 +15,6 @@ import { ArrowRight, Code2, Layers, Zap } from "lucide-react";
 import HeroSection from "../components/sections/HeroSection";
 import SkillsSection from "../components/sections/SkillsSection";
 import FeaturedProjects from "../components/sections/FeaturedProjects";
-import { alphaColor } from "../utils/color";
 
 const services = [
   {
@@ -23,7 +22,7 @@ const services = [
     title: "Full-Stack Development",
     description:
       "End-to-end web applications with React frontends and Node.js backends, designed to scale.",
-    color: "var(--phosphor)",
+    color: "#00ff88",
   },
 ];
 
@@ -46,8 +45,8 @@ function ServicesSection() {
               <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-300"
                 style={{
-                  background: alphaColor(service.color, 0.15),
-                  border: `1px solid ${alphaColor(service.color, 0.3)}`,
+                  background: `${service.color}15`,
+                  border: `1px solid ${service.color}30`,
                 }}
               >
                 <service.icon

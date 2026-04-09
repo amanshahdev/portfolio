@@ -17,20 +17,19 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github, ArrowRight, Loader2 } from "lucide-react";
 import { projectsAPI } from "../../utils/api";
-import { alphaColor } from "../../utils/color";
 
 function ProjectCard({ project, index }) {
   const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true });
 
   const categoryColors = {
-    fullstack: "var(--phosphor)",
+    fullstack: "#00ff88",
     frontend: "#38bdf8",
     backend: "#a855f7",
     mobile: "#f59e0b",
     other: "#6b7280",
   };
 
-  const color = categoryColors[project.category] || "var(--phosphor)";
+  const color = categoryColors[project.category] || "#00ff88";
 
   return (
     <motion.div
@@ -51,7 +50,7 @@ function ProjectCard({ project, index }) {
       <motion.div
         className="absolute top-0 left-0 right-0 h-px"
         style={{
-          background: `linear-gradient(90deg, transparent, ${alphaColor(color, 0.38)}, transparent)`,
+          background: `linear-gradient(90deg, transparent, ${color}60, transparent)`,
         }}
         initial={{ scaleX: 0, opacity: 0 }}
         animate={inView ? { scaleX: 1, opacity: 1 } : {}}
@@ -62,7 +61,7 @@ function ProjectCard({ project, index }) {
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: `radial-gradient(600px at 50% 0%, ${alphaColor(color, 0.08)} 0%, transparent 70%)`,
+          background: `radial-gradient(600px at 50% 0%, ${color}08 0%, transparent 70%)`,
         }}
       />
 
@@ -73,8 +72,8 @@ function ProjectCard({ project, index }) {
             className="text-xs font-mono uppercase tracking-widest px-2.5 py-1 rounded-full"
             style={{
               color: color,
-              background: alphaColor(color, 0.15),
-              border: `1px solid ${alphaColor(color, 0.3)}`,
+              background: `${color}15`,
+              border: `1px solid ${color}30`,
             }}
           >
             {project.category}

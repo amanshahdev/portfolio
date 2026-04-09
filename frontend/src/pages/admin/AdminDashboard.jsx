@@ -25,7 +25,6 @@ import {
 } from "lucide-react";
 import { projectsAPI, contactAPI } from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
-import { alphaColor } from "../../utils/color";
 
 function StatCard({ icon: Icon, label, value, color, loading, delay }) {
   return (
@@ -38,10 +37,7 @@ function StatCard({ icon: Icon, label, value, color, loading, delay }) {
       <div className="flex items-start justify-between mb-4">
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center"
-          style={{
-            background: alphaColor(color, 0.15),
-            border: `1px solid ${alphaColor(color, 0.3)}`,
-          }}
+          style={{ background: `${color}15`, border: `1px solid ${color}30` }}
         >
           <Icon className="w-5 h-5" style={{ color }} />
         </div>
@@ -102,7 +98,7 @@ export default function AdminDashboard() {
       icon: FolderOpen,
       label: "Total Projects",
       value: stats.totalProjects,
-      color: "var(--phosphor)",
+      color: "#00ff88",
       delay: 0,
     },
     {

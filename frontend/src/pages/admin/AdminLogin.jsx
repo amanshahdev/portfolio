@@ -80,8 +80,7 @@ export default function AdminLogin() {
       <div
         className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-[0.06]"
         style={{
-          background:
-            "radial-gradient(circle, rgba(var(--phosphor-rgb), 1) 0%, transparent 70%)",
+          background: "radial-gradient(circle, #00ff88 0%, transparent 70%)",
         }}
       />
 

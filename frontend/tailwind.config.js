@@ -33,7 +33,7 @@ export default {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "phosphor-gradient":
-          "linear-gradient(135deg, var(--phosphor) 0%, var(--phosphor-dim) 100%)",
+          "linear-gradient(135deg, #00ff88 0%, #00cc6e 100%)",
         "aurora-gradient":
           "linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #ec4899 100%)",
         "void-gradient": "linear-gradient(180deg, #050508 0%, #0a0a12 100%)",
@@ -51,8 +51,8 @@ export default {
           "50%": { transform: "translateY(-20px)" },
         },
         pulseGlow: {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(var(--phosphor-rgb),0.3)" },
-          "50%": { boxShadow: "0 0 40px rgba(var(--phosphor-rgb),0.6)" },
+          "0%, 100%": { boxShadow: "0 0 20px rgba(0,255,136,0.3)" },
+          "50%": { boxShadow: "0 0 40px rgba(0,255,136,0.6)" },
         },
         shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
@@ -60,13 +60,13 @@ export default {
         },
       },
       boxShadow: {
-        phosphor: "0 0 30px rgba(var(--phosphor-rgb),0.3)",
-        "phosphor-lg": "0 0 60px rgba(var(--phosphor-rgb),0.4)",
+        phosphor: "0 0 30px rgba(0,255,136,0.3)",
+        "phosphor-lg": "0 0 60px rgba(0,255,136,0.4)",
         aurora: "0 0 30px rgba(124,58,237,0.4)",
         glass:
           "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)",
         "card-hover":
-          "0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(var(--phosphor-rgb),0.1)",
+          "0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(0,255,136,0.1)",
       },
       backdropBlur: {
         xs: "2px",

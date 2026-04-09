@@ -16,7 +16,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github, Loader2, Search, Filter } from "lucide-react";
 import { projectsAPI } from "../utils/api";
-import { alphaColor } from "../utils/color";
 
 const categories = [
   { id: "all", label: "All Projects" },
@@ -26,7 +25,7 @@ const categories = [
 ];
 
 const categoryColors = {
-  fullstack: "var(--phosphor)",
+  fullstack: "#00ff88",
   frontend: "#38bdf8",
   backend: "#a855f7",
   mobile: "#f59e0b",
@@ -34,11 +33,7 @@ const categoryColors = {
 };
 
 const statusColors = {
-  completed: {
-    text: "var(--phosphor)",
-    bg: "rgba(var(--phosphor-rgb),0.1)",
-    label: "Completed",
-  },
+  completed: { text: "#00ff88", bg: "rgba(0,255,136,0.1)", label: "Completed" },
   "in-progress": {
     text: "#f59e0b",
     bg: "rgba(245,158,11,0.1)",
@@ -49,7 +44,7 @@ const statusColors = {
 
 function ProjectCard({ project, index }) {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
-  const color = categoryColors[project.category] || "var(--phosphor)";
+  const color = categoryColors[project.category] || "#00ff88";
   const status = statusColors[project.status] || statusColors.completed;
 
   return (
@@ -68,7 +63,7 @@ function ProjectCard({ project, index }) {
       <div
         className="h-0.5 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{
-          background: `linear-gradient(90deg, transparent, ${alphaColor(color, 1)}, transparent)`,
+          background: `linear-gradient(90deg, transparent, ${color}, transparent)`,
         }}
       />
 
@@ -79,8 +74,8 @@ function ProjectCard({ project, index }) {
             className="text-xs font-mono uppercase tracking-wider px-2 py-1 rounded-full"
             style={{
               color: color,
-              background: alphaColor(color, 0.15),
-              border: `1px solid ${alphaColor(color, 0.25)}`,
+              background: `${color}15`,
+              border: `1px solid ${color}25`,
             }}
           >
             {project.category}

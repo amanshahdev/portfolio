@@ -48,10 +48,7 @@ export default function App() {
                 fontSize: "14px",
               },
               success: {
-                iconTheme: {
-                  primary: "var(--phosphor)",
-                  secondary: "var(--toast-bg)",
-                },
+                iconTheme: { primary: "#00ff88", secondary: "var(--toast-bg)" },
               },
               error: {
                 iconTheme: { primary: "#ef4444", secondary: "var(--toast-bg)" },

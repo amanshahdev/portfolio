@@ -1,4 +1,3 @@
-import { alphaColor } from "../../utils/color";
 /**
  * pages/admin/AdminProjects.jsx — Full project CRUD management page.
  *
@@ -475,7 +474,7 @@ export default function AdminProjects() {
   };
 
   const categoryColors = {
-    fullstack: "var(--phosphor)",
+    fullstack: "#00ff88",
     frontend: "#38bdf8",
     backend: "#a855f7",
     mobile: "#f59e0b",
@@ -568,8 +567,8 @@ export default function AdminProjects() {
                             className="text-xs font-mono px-2 py-1 rounded-full"
                             style={{
                               color,
-                              background: alphaColor(color, 0.15),
-                              border: `1px solid ${alphaColor(color, 0.25)}`,
+                              background: `${color}15`,
+                              border: `1px solid ${color}25`,
                             }}
                           >
                             {project.category}
