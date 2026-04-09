@@ -12,7 +12,7 @@
  *       without requiring visitors to navigate away.
  */
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github, ArrowRight, Loader2 } from "lucide-react";
@@ -20,6 +20,7 @@ import { projectsAPI } from "../../utils/api";
 
 function ProjectCard({ project, index }) {
   const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true });
+  const navigate = useNavigate();
 
   const categoryColors = {
     fullstack: "#00ff88",
@@ -30,6 +31,7 @@ function ProjectCard({ project, index }) {
   };
 
   const color = categoryColors[project.category] || "#00ff88";
+  const openDetails = () => navigate(`/projects/${project._id}`);
 
   return (
     <motion.div
@@ -42,8 +44,17 @@ function ProjectCard({ project, index }) {
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
       whileHover={{ y: -6 }}
+      onClick={openDetails}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openDetails();
+        }
+      }}
+      role="button"
+      tabIndex={0}
       className="group relative glass rounded-2xl overflow-hidden border border-border-1
-                 hover:border-white/15 transition-all duration-500 hover:shadow-card-hover
+                 hover:border-white/15 transition-all duration-500 hover:shadow-card-hover cursor-pointer
                  flex flex-col"
     >
       {/* Top accent line */}
@@ -112,6 +123,7 @@ function ProjectCard({ project, index }) {
               href={project.githubLink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-1.5 text-xs font-mono text-white/40 hover:text-white transition-colors duration-200 group/link"
             >
               <Github className="w-3.5 h-3.5" />
@@ -123,6 +135,7 @@ function ProjectCard({ project, index }) {
               href={project.liveLink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-1.5 text-xs font-mono text-white/40 hover:text-phosphor transition-colors duration-200 ml-auto"
             >
               Live Demo

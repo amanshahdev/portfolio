@@ -12,6 +12,7 @@
  *       to their interests (frontend, backend, fullstack, etc.).
  */
 import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github, Loader2, Search, Filter } from "lucide-react";
@@ -44,8 +45,10 @@ const statusColors = {
 
 function ProjectCard({ project, index }) {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+  const navigate = useNavigate();
   const color = categoryColors[project.category] || "#00ff88";
   const status = statusColors[project.status] || statusColors.completed;
+  const openDetails = () => navigate(`/projects/${project._id}`);
 
   return (
     <motion.div
@@ -56,8 +59,17 @@ function ProjectCard({ project, index }) {
       exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
       transition={{ delay: (index % 6) * 0.07, duration: 0.5 }}
       whileHover={{ y: -4 }}
+      onClick={openDetails}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openDetails();
+        }
+      }}
+      role="button"
+      tabIndex={0}
       className="group glass rounded-2xl border border-border-1 hover:border-white/12
-                 transition-all duration-500 hover:shadow-card-hover flex flex-col overflow-hidden"
+                 transition-all duration-500 hover:shadow-card-hover cursor-pointer flex flex-col overflow-hidden"
     >
       {/* Top accent */}
       <div
@@ -119,6 +131,7 @@ function ProjectCard({ project, index }) {
               href={project.githubLink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-1.5 text-xs font-mono text-white/35 hover:text-white transition-colors duration-200"
             >
               <Github className="w-3.5 h-3.5" />
@@ -136,6 +149,7 @@ function ProjectCard({ project, index }) {
               href={project.liveLink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="flex items-center gap-1.5 text-xs font-mono text-white/35 hover:text-phosphor transition-colors duration-200 ml-auto"
             >
               Live Demo
