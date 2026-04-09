@@ -22,7 +22,7 @@ const services = [
     title: "Full-Stack Development",
     description:
       "End-to-end web applications with React frontends and Node.js backends, designed to scale.",
-    color: "#00ff88",
+    color: "var(--phosphor)",
   },
 ];
 
@@ -81,7 +81,7 @@ function CTASection() {
           className="relative rounded-3xl overflow-hidden p-12 md:p-20 text-center"
           style={{
             background:
-              "linear-gradient(135deg, rgba(0,255,136,0.05) 0%, rgba(124,58,237,0.08) 50%, rgba(56,189,248,0.05) 100%)",
+              "linear-gradient(135deg, rgba(var(--phosphor-rgb),0.05) 0%, rgba(124,58,237,0.08) 50%, rgba(56,189,248,0.05) 100%)",
             border: "1px solid rgba(255,255,255,0.08)",
           }}
         >

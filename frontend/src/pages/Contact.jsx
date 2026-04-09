@@ -189,8 +189,8 @@ export default function Contact() {
                 className="rounded-2xl p-6"
                 style={{
                   background:
-                    "linear-gradient(135deg, rgba(0,255,136,0.05) 0%, rgba(124,58,237,0.08) 100%)",
-                  border: "1px solid rgba(0,255,136,0.15)",
+                    "linear-gradient(135deg, rgba(var(--phosphor-rgb), 0.05) 0%, rgba(124,58,237,0.08) 100%)",
+                  border: "1px solid rgba(var(--phosphor-rgb), 0.15)",
                 }}
               >
                 <div className="flex items-center gap-2 mb-3">

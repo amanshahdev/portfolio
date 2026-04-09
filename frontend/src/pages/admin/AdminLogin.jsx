@@ -14,7 +14,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Terminal, Eye, EyeOff, Loader2, Lock, Mail, ArrowLeft } from "lucide-react";
+import {
+  Terminal,
+  Eye,
+  EyeOff,
+  Loader2,
+  Lock,
+  Mail,
+  ArrowLeft,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import { authAPI } from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
@@ -57,7 +65,8 @@ export default function AdminLogin() {
       toast.success(`Welcome back, ${user.name}!`);
       navigate(from, { replace: true });
     } catch (err) {
-      const msg = err.response?.data?.message || "Login failed. Please try again.";
+      const msg =
+        err.response?.data?.message || "Login failed. Please try again.";
       setError(msg);
     } finally {
       setLoading(false);
@@ -70,7 +79,10 @@ export default function AdminLogin() {
       <div className="absolute inset-0 grid-bg opacity-30" />
       <div
         className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-[0.06]"
-        style={{ background: "radial-gradient(circle, #00ff88 0%, transparent 70%)" }}
+        style={{
+          background:
+            "radial-gradient(circle, rgba(var(--phosphor-rgb), 1) 0%, transparent 70%)",
+        }}
       />
 
       <div className="relative z-10 w-full max-w-md">
@@ -102,8 +114,12 @@ export default function AdminLogin() {
               <Terminal className="w-5 h-5 text-phosphor" />
             </div>
             <div>
-              <div className="font-display font-semibold text-white">Admin Panel</div>
-              <div className="text-xs font-mono text-white/30">amanshah.dev</div>
+              <div className="font-display font-semibold text-white">
+                Admin Panel
+              </div>
+              <div className="text-xs font-mono text-white/30">
+                amanshah.dev
+              </div>
             </div>
           </div>
 
@@ -169,7 +185,11 @@ export default function AdminLogin() {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/50 transition-colors"
                   tabIndex={-1}
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
             </div>

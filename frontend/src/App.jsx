@@ -48,7 +48,10 @@ export default function App() {
                 fontSize: "14px",
               },
               success: {
-                iconTheme: { primary: "#00ff88", secondary: "var(--toast-bg)" },
+                iconTheme: {
+                  primary: "var(--phosphor)",
+                  secondary: "var(--toast-bg)",
+                },
               },
               error: {
                 iconTheme: { primary: "#ef4444", secondary: "var(--toast-bg)" },
@@ -76,7 +79,10 @@ export default function App() {
                   </ProtectedRoute>
                 }
               >
-                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route
+                  index
+                  element={<Navigate to="/admin/dashboard" replace />}
+                />
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="projects" element={<AdminProjects />} />
                 <Route path="messages" element={<AdminMessages />} />
