@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github, ArrowRight, Loader2 } from "lucide-react";
 import { projectsAPI } from "../../utils/api";
+import { alphaColor } from "../../utils/color";
 
 function ProjectCard({ project, index }) {
   const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true });
