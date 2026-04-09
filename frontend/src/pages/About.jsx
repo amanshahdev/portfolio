@@ -34,7 +34,7 @@ const timeline = [
     period: "2022 – Present",
     description:
       "Leading a team of 4 engineers building a SaaS analytics platform serving 50,000+ users. Architected microservices migration from monolith reducing deployment time by 70%.",
-    color: "#00ff88",
+    color: "var(--phosphor)",
   },
   {
     type: "work",

@@ -18,7 +18,7 @@ import { useInView } from "react-intersection-observer";
 const skillCategories = [
   {
     title: "Frontend",
-    color: "#00ff88",
+    color: "var(--phosphor)",
     skills: [
       { name: "React.js", level: 95 },
       { name: "HTML/CSS", level: 90 },
@@ -83,7 +83,9 @@ function SkillBar({ name, level, color, index }) {
       <div className="h-1.5 bg-surface-2 rounded-full overflow-hidden">
         <motion.div
           className="h-full rounded-full"
-          style={{ background: `linear-gradient(90deg, ${color}88, ${color})` }}
+          style={{
+            background: `linear-gradient(90deg, ${alphaColor(color, 0.55)}, ${color})`,
+          }}
           initial={{ width: 0 }}
           animate={inView ? { width: `${level}%` } : { width: 0 }}
           transition={{
@@ -145,7 +147,7 @@ export default function SkillsSection() {
                   className="w-2 h-2 rounded-full"
                   style={{
                     background: category.color,
-                    boxShadow: `0 0 8px ${category.color}`,
+                    boxShadow: `0 0 8px ${alphaColor(category.color, 0.6)}`,
                   }}
                 />
                 <h3 className="font-display font-semibold text-white">
