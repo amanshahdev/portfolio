@@ -28,12 +28,18 @@ const projectRules = [
     .trim()
     .notEmpty()
     .withMessage("Title is required")
-    .isLength({ max: 100 }),
+    .isLength({ max: 100 })
+    .withMessage("Title cannot exceed 100 characters"),
   body("description")
     .trim()
     .notEmpty()
     .withMessage("Description is required")
-    .isLength({ max: 1000 }),
+    .isLength({ max: 1000 })
+    .withMessage("Description cannot exceed 1000 characters"),
+  body("shortDescription")
+    .optional({ checkFalsy: true })
+    .isLength({ max: 200 })
+    .withMessage("Short description cannot exceed 200 characters"),
   body("techStack")
     .isArray({ min: 1 })
     .withMessage("Tech stack must be a non-empty array"),
@@ -57,6 +63,10 @@ const projectRules = [
     .optional()
     .isIn(["fullstack", "frontend", "backend", "mobile", "other"])
     .withMessage("Invalid category"),
+  body("status")
+    .optional()
+    .isIn(["completed", "in-progress", "archived"])
+    .withMessage("Invalid status"),
 ];
 
 // ── Public routes ──────────────────────────────────────────────────────────

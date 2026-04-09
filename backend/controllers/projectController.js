@@ -16,6 +16,28 @@
 const { validationResult } = require("express-validator");
 const Project = require("../models/Project");
 
+function normalizeValidationErrors(errorList) {
+  return errorList.map((item) => {
+    if (item?.msg !== "Invalid value") return item;
+
+    const fallbackByPath = {
+      title: "Title cannot exceed 100 characters",
+      description: "Description cannot exceed 1000 characters",
+      shortDescription: "Short description cannot exceed 200 characters",
+      techStack: "Tech stack must be a non-empty array",
+      githubLink: "GitHub link must be a valid URL",
+      liveLink: "Live link must be a valid URL",
+      category: "Invalid category",
+      status: "Invalid status",
+    };
+
+    return {
+      ...item,
+      msg: fallbackByPath[item.path] || "Invalid request data",
+    };
+  });
+}
+
 // ── GET /api/projects ──────────────────────────────────────────────────────
 exports.getProjects = async (req, res) => {
   try {
@@ -69,7 +91,7 @@ exports.createProject = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const errorList = errors.array();
+      const errorList = normalizeValidationErrors(errors.array());
       return res.status(400).json({
         success: false,
         message: errorList[0]?.msg || "Validation failed.",
@@ -103,7 +125,7 @@ exports.updateProject = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const errorList = errors.array();
+      const errorList = normalizeValidationErrors(errors.array());
       return res.status(400).json({
         success: false,
         message: errorList[0]?.msg || "Validation failed.",
