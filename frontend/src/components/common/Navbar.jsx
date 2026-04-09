@@ -7,7 +7,8 @@
  */
 import React, { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X, Terminal } from "lucide-react";
+import { Menu, X, Terminal, Sun, Moon } from "lucide-react";
+import { useTheme } from "../../context/ThemeContext";
 
 const navLinks = [
   { path: "/", label: "Home" },
@@ -19,6 +20,7 @@ const navLinks = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { isDark, toggleTheme } = useTheme();
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -62,6 +64,19 @@ export default function Navbar() {
                 {link.label}
               </NavLink>
             ))}
+            <button
+              onClick={toggleTheme}
+              className="ml-3 w-9 h-9 rounded-lg glass border-border-1 flex items-center justify-center text-white/65 hover:text-phosphor hover:border-phosphor/30 transition-colors"
+              aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+              type="button"
+              title={`Switch to ${isDark ? "light" : "dark"} mode`}
+            >
+              {isDark ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4" />
+              )}
+            </button>
             <Link
               to="/admin/login"
               className="ml-4 px-4 py-2 text-xs font-mono text-white/40 hover:text-phosphor transition-colors tracking-widest uppercase"
@@ -90,6 +105,21 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="fixed top-[60px] left-0 right-0 z-[99] bg-black/95 border-b border-white/10 md:hidden shadow-lg">
           <nav className="w-full max-w-7xl mx-auto px-4 md:px-6 py-4 flex flex-col gap-2">
+            <button
+              onClick={toggleTheme}
+              className="mb-2 w-full px-4 py-3 rounded-lg glass border border-border-1 text-sm text-white/70 hover:text-phosphor hover:border-phosphor/30 transition-colors flex items-center justify-between"
+              type="button"
+            >
+              <span>
+                {isDark ? "Switch to light mode" : "Switch to dark mode"}
+              </span>
+              {isDark ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4" />
+              )}
+            </button>
+
             {navLinks.map((link) => (
               <NavLink
                 key={link.path}

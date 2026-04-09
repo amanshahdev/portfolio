@@ -16,6 +16,24 @@
 
 /* ── CSS Custom Properties (Design Tokens) ────────────────────────────── */
 :root {
+  --white-rgb: 255 255 255;
+  --black-rgb: 0 0 0;
+  --void-rgb: 5 5 8;
+  --void-1-rgb: 10 10 18;
+  --void-2-rgb: 15 15 26;
+  --void-3-rgb: 22 22 42;
+  --phosphor-rgb: 0 255 136;
+  --phosphor-dim-rgb: 0 204 110;
+  --phosphor-glow-rgb: 0 255 136;
+  --aurora-rgb: 124 58 237;
+  --aurora-2-rgb: 168 85 247;
+  --plasma-rgb: 245 158 11;
+  --ice-rgb: 56 189 248;
+  --surface-1-rgb: 255 255 255;
+  --surface-2-rgb: 255 255 255;
+  --surface-3-rgb: 255 255 255;
+  --border-1-rgb: 255 255 255;
+  --border-2-rgb: 255 255 255;
   --void: #050508;
   --void-1: #0a0a12;
   --void-2: #0f0f1a;
@@ -35,6 +53,45 @@
   --surface-3: rgba(255, 255, 255, 0.09);
   --border-1: rgba(255, 255, 255, 0.06);
   --border-2: rgba(255, 255, 255, 0.12);
+  --toast-bg: #0f0f1a;
+  --toast-text: rgba(255, 255, 255, 0.95);
+  --toast-border: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="light"] {
+  --white-rgb: 15 23 42;
+  --black-rgb: 248 250 252;
+  --void-rgb: 245 248 252;
+  --void-1-rgb: 237 242 249;
+  --void-2-rgb: 230 236 245;
+  --void-3-rgb: 221 228 239;
+  --phosphor-rgb: 0 166 99;
+  --phosphor-dim-rgb: 0 140 84;
+  --phosphor-glow-rgb: 0 166 99;
+  --aurora-rgb: 109 40 217;
+  --aurora-2-rgb: 147 51 234;
+  --plasma-rgb: 217 119 6;
+  --ice-rgb: 14 165 233;
+  --surface-1-rgb: 15 23 42;
+  --surface-2-rgb: 15 23 42;
+  --surface-3-rgb: 15 23 42;
+  --border-1-rgb: 15 23 42;
+  --border-2-rgb: 15 23 42;
+  --void: #f5f8fc;
+  --void-1: #edf2f9;
+  --void-2: #e6ecf5;
+  --void-3: #dde4ef;
+  --text-primary: rgba(15, 23, 42, 0.95);
+  --text-secondary: rgba(15, 23, 42, 0.7);
+  --text-muted: rgba(15, 23, 42, 0.45);
+  --surface-1: rgba(15, 23, 42, 0.04);
+  --surface-2: rgba(15, 23, 42, 0.08);
+  --surface-3: rgba(15, 23, 42, 0.12);
+  --border-1: rgba(15, 23, 42, 0.1);
+  --border-2: rgba(15, 23, 42, 0.18);
+  --toast-bg: #f8fafc;
+  --toast-text: rgba(15, 23, 42, 0.95);
+  --toast-border: rgba(15, 23, 42, 0.12);
 }
 
 /* ── Base Reset ───────────────────────────────────────────────────────── */
@@ -69,6 +126,9 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 220ms ease,
+    color 220ms ease;
 }
 
 /* ── Custom Scrollbar ─────────────────────────────────────────────────── */
@@ -83,7 +143,7 @@ body {
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 255, 136, 0.4);
+  background: rgba(var(--phosphor-rgb), 0.4);
 }
 
 /* ── Mobile Responsiveness Fixes ───────────────────────────────────── */
@@ -150,11 +210,11 @@ body {
   }
 
   .phosphor-border {
-    border: 1px solid rgba(0, 255, 136, 0.3);
+    border: 1px solid rgba(var(--phosphor-rgb), 0.3);
   }
 
   .glow-phosphor {
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    box-shadow: 0 0 20px rgba(var(--phosphor-rgb), 0.3);
   }
 
   .glow-aurora {
@@ -163,8 +223,8 @@ body {
 
   .grid-bg {
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      linear-gradient(var(--border-1) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-1) 1px, transparent 1px);
     background-size: 40px 40px;
   }
 
@@ -175,7 +235,7 @@ body {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 9999;
-    opacity: 0.4;
+    opacity: 0.25;
   }
 
   .no-scrollbar::-webkit-scrollbar {
@@ -185,6 +245,10 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+}
+
+[data-theme="light"] .noise-bg::before {
+  opacity: 0.12;
 }
 
 /* ── Component Classes ───────────────────────────────────────────────── */

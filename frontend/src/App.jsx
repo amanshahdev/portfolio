@@ -16,6 +16,7 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import MainLayout from "./components/common/MainLayout";
 import AdminLayout from "./components/common/AdminLayout";
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -33,58 +34,60 @@ const AdminMessages = lazy(() => import("./pages/admin/AdminMessages"));
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            style: {
-              background: "#0f0f1a",
-              color: "#fff",
-              border: "1px solid rgba(255,255,255,0.12)",
-              fontFamily: "'Cabinet Grotesk', sans-serif",
-              fontSize: "14px",
-            },
-            success: {
-              iconTheme: { primary: "#00ff88", secondary: "#050508" },
-            },
-            error: {
-              iconTheme: { primary: "#ef4444", secondary: "#050508" },
-            },
-          }}
-        />
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                background: "var(--toast-bg)",
+                color: "var(--toast-text)",
+                border: "1px solid var(--toast-border)",
+                fontFamily: "'Cabinet Grotesk', sans-serif",
+                fontSize: "14px",
+              },
+              success: {
+                iconTheme: { primary: "#00ff88", secondary: "var(--toast-bg)" },
+              },
+              error: {
+                iconTheme: { primary: "#ef4444", secondary: "var(--toast-bg)" },
+              },
+            }}
+          />
 
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            {/* ── Public Portfolio Routes ──────────────────────────── */}
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/contact" element={<Contact />} />
-            </Route>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* ── Public Portfolio Routes ──────────────────────────── */}
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/contact" element={<Contact />} />
+              </Route>
 
-            {/* ── Admin Routes ─────────────────────────────────────── */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <AdminLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate to="/admin/dashboard" replace />} />
-              <Route path="dashboard" element={<AdminDashboard />} />
-              <Route path="projects" element={<AdminProjects />} />
-              <Route path="messages" element={<AdminMessages />} />
-            </Route>
+              {/* ── Admin Routes ─────────────────────────────────────── */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="projects" element={<AdminProjects />} />
+                <Route path="messages" element={<AdminMessages />} />
+              </Route>
 
-            {/* ── 404 ──────────────────────────────────────────────── */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </AuthProvider>
+              {/* ── 404 ──────────────────────────────────────────────── */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

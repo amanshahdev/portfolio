@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const colorVar = (name) => `rgb(var(${name}) / <alpha-value>)`;
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -9,22 +11,24 @@ export default {
         mono: ["'JetBrains Mono'", "monospace"],
       },
       colors: {
-        void: "#050508",
-        "void-1": "#0a0a12",
-        "void-2": "#0f0f1a",
-        "void-3": "#16162a",
-        phosphor: "#00ff88",
-        "phosphor-dim": "#00cc6e",
-        "phosphor-glow": "rgba(0,255,136,0.15)",
-        aurora: "#7c3aed",
-        "aurora-2": "#a855f7",
-        plasma: "#f59e0b",
-        ice: "#38bdf8",
-        "surface-1": "rgba(255,255,255,0.03)",
-        "surface-2": "rgba(255,255,255,0.06)",
-        "surface-3": "rgba(255,255,255,0.09)",
-        "border-1": "rgba(255,255,255,0.06)",
-        "border-2": "rgba(255,255,255,0.12)",
+        white: colorVar("--white-rgb"),
+        black: colorVar("--black-rgb"),
+        void: colorVar("--void-rgb"),
+        "void-1": colorVar("--void-1-rgb"),
+        "void-2": colorVar("--void-2-rgb"),
+        "void-3": colorVar("--void-3-rgb"),
+        phosphor: colorVar("--phosphor-rgb"),
+        "phosphor-dim": colorVar("--phosphor-dim-rgb"),
+        "phosphor-glow": colorVar("--phosphor-glow-rgb"),
+        aurora: colorVar("--aurora-rgb"),
+        "aurora-2": colorVar("--aurora-2-rgb"),
+        plasma: colorVar("--plasma-rgb"),
+        ice: colorVar("--ice-rgb"),
+        "surface-1": colorVar("--surface-1-rgb"),
+        "surface-2": colorVar("--surface-2-rgb"),
+        "surface-3": colorVar("--surface-3-rgb"),
+        "border-1": colorVar("--border-1-rgb"),
+        "border-2": colorVar("--border-2-rgb"),
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
