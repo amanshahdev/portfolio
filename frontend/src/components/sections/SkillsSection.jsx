@@ -23,7 +23,6 @@ const skillCategories = [
       { name: "React.js", level: 95 },
       { name: "HTML/CSS", level: 90 },
       { name: "Vercel", level: 85 },
-      { name: "Git", level: 90 },
     ],
   },
   {
@@ -40,6 +39,7 @@ const skillCategories = [
     title: "Tools & Deployment",
     color: "#38bdf8",
     skills: [
+      { name: "Git", level: 90 },
       { name: "MySQL", level: 88 },
       { name: "Render", level: 85 },
       { name: "Java/JavaFX", level: 80 },
