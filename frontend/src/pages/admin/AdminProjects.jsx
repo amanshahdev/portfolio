@@ -120,7 +120,23 @@ function ProjectFormModal({ project, onClose, onSave }) {
       }
       onSave();
     } catch (err) {
-      const msg = err.response?.data?.message || "Failed to save project.";
+      const apiErrors = err.response?.data?.errors;
+      if (Array.isArray(apiErrors) && apiErrors.length > 0) {
+        const fieldErrors = apiErrors.reduce((acc, item) => {
+          if (item?.path && !acc[item.path]) {
+            acc[item.path] = item.msg;
+          }
+          return acc;
+        }, {});
+        if (Object.keys(fieldErrors).length > 0) {
+          setErrors((prev) => ({ ...prev, ...fieldErrors }));
+        }
+      }
+
+      const msg =
+        err.response?.data?.message ||
+        (Array.isArray(apiErrors) && apiErrors[0]?.msg) ||
+        "Failed to save project.";
       toast.error(msg);
     } finally {
       setLoading(false);

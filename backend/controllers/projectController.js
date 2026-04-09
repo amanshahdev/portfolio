@@ -37,7 +37,9 @@ exports.getProjects = async (req, res) => {
     });
   } catch (err) {
     console.error("Get projects error:", err);
-    res.status(500).json({ success: false, message: "Server error fetching projects." });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error fetching projects." });
   }
 };
 
@@ -46,12 +48,16 @@ exports.getProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
     if (!project) {
-      return res.status(404).json({ success: false, message: "Project not found." });
+      return res
+        .status(404)
+        .json({ success: false, message: "Project not found." });
     }
     res.json({ success: true, data: project });
   } catch (err) {
     if (err.name === "CastError") {
-      return res.status(400).json({ success: false, message: "Invalid project ID." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid project ID." });
     }
     console.error("Get project error:", err);
     res.status(500).json({ success: false, message: "Server error." });
@@ -63,11 +69,18 @@ exports.createProject = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, errors: errors.array() });
+      const errorList = errors.array();
+      return res.status(400).json({
+        success: false,
+        message: errorList[0]?.msg || "Validation failed.",
+        errors: errorList,
+      });
     }
 
     // Auto-assign order as max + 1
-    const maxOrder = await Project.findOne().sort({ order: -1 }).select("order");
+    const maxOrder = await Project.findOne()
+      .sort({ order: -1 })
+      .select("order");
     const order = maxOrder ? maxOrder.order + 1 : 0;
 
     const project = await Project.create({ ...req.body, order });
@@ -79,7 +92,9 @@ exports.createProject = async (req, res) => {
     });
   } catch (err) {
     console.error("Create project error:", err);
-    res.status(500).json({ success: false, message: "Server error creating project." });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error creating project." });
   }
 };
 
@@ -88,26 +103,41 @@ exports.updateProject = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, errors: errors.array() });
+      const errorList = errors.array();
+      return res.status(400).json({
+        success: false,
+        message: errorList[0]?.msg || "Validation failed.",
+        errors: errorList,
+      });
     }
 
     const project = await Project.findByIdAndUpdate(
       req.params.id,
       { ...req.body },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!project) {
-      return res.status(404).json({ success: false, message: "Project not found." });
+      return res
+        .status(404)
+        .json({ success: false, message: "Project not found." });
     }
 
-    res.json({ success: true, message: "Project updated successfully", data: project });
+    res.json({
+      success: true,
+      message: "Project updated successfully",
+      data: project,
+    });
   } catch (err) {
     if (err.name === "CastError") {
-      return res.status(400).json({ success: false, message: "Invalid project ID." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid project ID." });
     }
     console.error("Update project error:", err);
-    res.status(500).json({ success: false, message: "Server error updating project." });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error updating project." });
   }
 };
 
@@ -116,15 +146,21 @@ exports.deleteProject = async (req, res) => {
   try {
     const project = await Project.findByIdAndDelete(req.params.id);
     if (!project) {
-      return res.status(404).json({ success: false, message: "Project not found." });
+      return res
+        .status(404)
+        .json({ success: false, message: "Project not found." });
     }
     res.json({ success: true, message: "Project deleted successfully" });
   } catch (err) {
     if (err.name === "CastError") {
-      return res.status(400).json({ success: false, message: "Invalid project ID." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid project ID." });
     }
     console.error("Delete project error:", err);
-    res.status(500).json({ success: false, message: "Server error deleting project." });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error deleting project." });
   }
 };
 
@@ -133,17 +169,21 @@ exports.reorderProjects = async (req, res) => {
   try {
     const { projects } = req.body; // Array of { id, order }
     if (!Array.isArray(projects)) {
-      return res.status(400).json({ success: false, message: "Expected array of projects." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Expected array of projects." });
     }
 
     const ops = projects.map(({ id, order }) =>
-      Project.findByIdAndUpdate(id, { order }, { new: false })
+      Project.findByIdAndUpdate(id, { order }, { new: false }),
     );
     await Promise.all(ops);
 
     res.json({ success: true, message: "Projects reordered successfully" });
   } catch (err) {
     console.error("Reorder error:", err);
-    res.status(500).json({ success: false, message: "Server error reordering projects." });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error reordering projects." });
   }
 };

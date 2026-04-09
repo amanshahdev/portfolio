@@ -24,18 +24,34 @@ const router = express.Router();
 
 // ── Validation rules ───────────────────────────────────────────────────────
 const projectRules = [
-  body("title").trim().notEmpty().withMessage("Title is required").isLength({ max: 100 }),
-  body("description").trim().notEmpty().withMessage("Description is required").isLength({ max: 1000 }),
+  body("title")
+    .trim()
+    .notEmpty()
+    .withMessage("Title is required")
+    .isLength({ max: 100 }),
+  body("description")
+    .trim()
+    .notEmpty()
+    .withMessage("Description is required")
+    .isLength({ max: 1000 }),
   body("techStack")
     .isArray({ min: 1 })
     .withMessage("Tech stack must be a non-empty array"),
   body("githubLink")
     .optional({ checkFalsy: true })
-    .isURL()
+    .isURL({
+      protocols: ["http", "https"],
+      require_protocol: true,
+      require_tld: false,
+    })
     .withMessage("GitHub link must be a valid URL"),
   body("liveLink")
     .optional({ checkFalsy: true })
-    .isURL()
+    .isURL({
+      protocols: ["http", "https"],
+      require_protocol: true,
+      require_tld: false,
+    })
     .withMessage("Live link must be a valid URL"),
   body("category")
     .optional()
