@@ -19,7 +19,7 @@ const API_URL = import.meta.env.VITE_API_URL || "/api";
 
 const api = axios.create({
   baseURL: API_URL,
-  timeout: 15000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -34,7 +34,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // ── Response interceptor: handle auth errors ──────────────────────────────
@@ -44,14 +44,14 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Token expired — clear storage and redirect to admin login
       const isAdminRoute = window.location.pathname.startsWith("/admin");
-      if (isAdminRoute && window.location.pathname !== "/admin/login") {
+      if (isAdminRoute && window.location.pathname !== "/admin") {
         localStorage.removeItem("portfolio_token");
         localStorage.removeItem("portfolio_user");
-        window.location.href = "/admin/login";
+        window.location.href = "/admin";
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 // ── Exported API methods ───────────────────────────────────────────────────
@@ -77,6 +77,17 @@ export const authAPI = {
   login: (data) => api.post("/auth/login", data),
   getProfile: () => api.get("/auth/profile"),
   changePassword: (data) => api.put("/auth/change-password", data),
+};
+
+export const resumeAPI = {
+  getCurrent: () => api.get("/resume"),
+  upload: (file) => {
+    const formData = new FormData();
+    formData.append("resume", file);
+    return api.post("/resume", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
 };
 
 export default api;

@@ -18,6 +18,8 @@ import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github, ArrowRight, Loader2 } from "lucide-react";
 import { projectsAPI } from "../../utils/api";
 
+const FEATURED_CACHE_KEY = "portfolio_featured_projects_cache_v1";
+
 function ProjectCard({ project, index }) {
   const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true });
   const navigate = useNavigate();
@@ -151,14 +153,55 @@ function ProjectCard({ project, index }) {
 export default function FeaturedProjects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
 
+  const fetchFeaturedProjects = async ({ withSpinner = true } = {}) => {
+    if (withSpinner) {
+      setLoading(true);
+    }
+
+    try {
+      setError("");
+      const res = await projectsAPI.getAll({ featured: true, limit: 3 });
+      const nextProjects = res.data?.data || [];
+      setProjects(nextProjects);
+      localStorage.setItem(FEATURED_CACHE_KEY, JSON.stringify(nextProjects));
+    } catch (err) {
+      const msg =
+        err.response?.data?.message || "Could not load featured projects.";
+      setError(msg);
+      const cached = localStorage.getItem(FEATURED_CACHE_KEY);
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed)) {
+            setProjects(parsed);
+          }
+        } catch {
+          // Ignore invalid cache payloads.
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    projectsAPI
-      .getAll({ featured: true, limit: 3 })
-      .then((res) => setProjects(res.data.data || []))
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    const cached = localStorage.getItem(FEATURED_CACHE_KEY);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setProjects(parsed);
+          setLoading(false);
+        }
+      } catch {
+        // Ignore invalid cache payloads.
+      }
+    }
+
+    fetchFeaturedProjects({ withSpinner: !cached });
   }, []);
 
   return (
@@ -197,16 +240,33 @@ export default function FeaturedProjects() {
           <div className="flex justify-center py-24">
             <Loader2 className="w-8 h-8 text-phosphor animate-spin" />
           </div>
+        ) : error && projects.length === 0 ? (
+          <div className="text-center py-24 text-white/30 space-y-3">
+            <p>{error}</p>
+            <button
+              onClick={() => fetchFeaturedProjects()}
+              className="text-sm text-phosphor hover:underline"
+            >
+              Retry
+            </button>
+          </div>
         ) : projects.length === 0 ? (
           <div className="text-center py-24 text-white/30">
             No featured projects yet.
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, i) => (
-              <ProjectCard key={project._id} project={project} index={i} />
-            ))}
-          </div>
+          <>
+            {error && (
+              <div className="mb-4 text-xs text-amber-300/90 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2">
+                Showing cached featured projects while we retry the latest data.
+              </div>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {projects.map((project, i) => (
+                <ProjectCard key={project._id} project={project} index={i} />
+              ))}
+            </div>
+          </>
         )}
       </div>
     </section>

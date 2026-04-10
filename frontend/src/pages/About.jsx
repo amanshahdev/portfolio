@@ -10,7 +10,7 @@
  * WHY:  A compelling About page builds trust and personality beyond a
  *       simple skills list.
  */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -24,6 +24,7 @@ import {
   GraduationCap,
   Award,
 } from "lucide-react";
+import { resumeAPI } from "../utils/api";
 
 const timeline = [
   {
@@ -106,6 +107,21 @@ function AnimatedSection({ children, delay = 0 }) {
 }
 
 export default function About() {
+  const [resumeUrl, setResumeUrl] = useState("");
+
+  useEffect(() => {
+    const loadResume = async () => {
+      try {
+        const res = await resumeAPI.getCurrent();
+        setResumeUrl(res.data?.data?.fileUrl || "");
+      } catch {
+        setResumeUrl("");
+      }
+    };
+
+    loadResume();
+  }, []);
+
   return (
     <div className="min-h-screen pt-28 pb-20">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
@@ -138,13 +154,13 @@ export default function About() {
             </div>
             <div className="flex flex-wrap gap-4 mt-8">
               <a
-                href="/resume.pdf"
+                href={resumeUrl || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-primary"
+                className={`btn-primary ${!resumeUrl ? "pointer-events-none opacity-50" : ""}`}
               >
                 <Download className="w-4 h-4" />
-                Download CV
+                {resumeUrl ? "Download CV" : "CV Unavailable"}
               </a>
               <Link to="/contact" className="btn-secondary">
                 Get in Touch

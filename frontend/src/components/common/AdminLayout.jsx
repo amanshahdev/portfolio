@@ -18,6 +18,7 @@ import {
   LayoutDashboard,
   FolderOpen,
   MessageSquare,
+  FileText,
   LogOut,
   Terminal,
   Menu,
@@ -31,9 +32,10 @@ import { useTheme } from "../../context/ThemeContext";
 import toast from "react-hot-toast";
 
 const navItems = [
-  { path: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-  { path: "/admin/projects", icon: FolderOpen, label: "Projects" },
-  { path: "/admin/messages", icon: MessageSquare, label: "Messages" },
+  { path: "/admin/panel/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+  { path: "/admin/panel/projects", icon: FolderOpen, label: "Projects" },
+  { path: "/admin/panel/messages", icon: MessageSquare, label: "Messages" },
+  { path: "/admin/panel/resume", icon: FileText, label: "Resume" },
 ];
 
 export default function AdminLayout() {
@@ -45,7 +47,7 @@ export default function AdminLayout() {
   const handleLogout = () => {
     logout();
     toast.success("Logged out successfully");
-    navigate("/admin/login");
+    navigate("/admin");
   };
 
   return (

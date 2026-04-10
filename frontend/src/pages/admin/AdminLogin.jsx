@@ -6,7 +6,7 @@
  *
  * HOW:  Controlled form with client-side validation. On success, calls
  *       AuthContext.login() to persist token + user, then redirects to
- *       /admin/dashboard. Shows error states inline.
+ *       /admin/panel/dashboard. Shows error states inline.
  *
  * WHY:  The admin panel must be gated behind auth; this page is the
  *       single entry point for that gate.
@@ -36,7 +36,7 @@ export default function AdminLogin() {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/admin/dashboard";
+  const from = location.state?.from?.pathname || "/admin/panel/dashboard";
 
   // Redirect if already authenticated
   useEffect(() => {

@@ -18,6 +18,8 @@ import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github, Loader2, Search, Filter } from "lucide-react";
 import { projectsAPI } from "../utils/api";
 
+const PROJECTS_CACHE_KEY = "portfolio_projects_cache_v1";
+
 const categories = [
   { id: "all", label: "All Projects" },
   { id: "fullstack", label: "Full-Stack" },
@@ -165,15 +167,55 @@ function ProjectCard({ project, index }) {
 export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const fetchProjects = async ({ withSpinner = true } = {}) => {
+    if (withSpinner) {
+      setLoading(true);
+    }
+
+    try {
+      setError("");
+      const res = await projectsAPI.getAll();
+      const nextProjects = res.data?.data || [];
+      setProjects(nextProjects);
+      localStorage.setItem(PROJECTS_CACHE_KEY, JSON.stringify(nextProjects));
+    } catch (err) {
+      const msg = err.response?.data?.message || "Could not load projects.";
+      setError(msg);
+      const cached = localStorage.getItem(PROJECTS_CACHE_KEY);
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed)) {
+            setProjects(parsed);
+          }
+        } catch {
+          // Ignore invalid cache payloads.
+        }
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    projectsAPI
-      .getAll()
-      .then((res) => setProjects(res.data.data || []))
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    const cached = localStorage.getItem(PROJECTS_CACHE_KEY);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setProjects(parsed);
+          setLoading(false);
+        }
+      } catch {
+        // Ignore invalid cache payloads.
+      }
+    }
+
+    fetchProjects({ withSpinner: !cached });
   }, []);
 
   const filtered = useMemo(() => {
@@ -255,8 +297,9 @@ export default function Projects() {
 
         {/* Count */}
         <p className="text-xs font-mono text-white/25 mb-6">
-          {filtered.length} project{filtered.length !== 1 ? "s" : ""}
-          {activeCategory !== "all" && ` in ${activeCategory}`}
+          {loading
+            ? "Loading projects..."
+            : `${filtered.length} project${filtered.length !== 1 ? "s" : ""}${activeCategory !== "all" ? ` in ${activeCategory}` : ""}`}
         </p>
 
         {/* Grid */}
@@ -264,6 +307,20 @@ export default function Projects() {
           <div className="flex justify-center py-32">
             <Loader2 className="w-8 h-8 text-phosphor animate-spin" />
           </div>
+        ) : error && projects.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-32"
+          >
+            <p className="text-white/45 mb-4">{error}</p>
+            <button
+              onClick={() => fetchProjects()}
+              className="text-sm text-phosphor hover:underline"
+            >
+              Retry loading projects
+            </button>
+          </motion.div>
         ) : filtered.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -285,16 +342,23 @@ export default function Projects() {
             </button>
           </motion.div>
         ) : (
-          <motion.div
-            layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            <AnimatePresence mode="popLayout">
-              {filtered.map((project, i) => (
-                <ProjectCard key={project._id} project={project} index={i} />
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          <>
+            {error && (
+              <div className="mb-4 text-xs text-amber-300/90 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2">
+                Showing cached projects while we retry the latest data.
+              </div>
+            )}
+            <motion.div
+              layout
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              <AnimatePresence mode="popLayout">
+                {filtered.map((project, i) => (
+                  <ProjectCard key={project._id} project={project} index={i} />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </>
         )}
       </div>
     </div>

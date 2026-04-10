@@ -77,12 +77,6 @@ export default function Navbar() {
                 <Moon className="w-4 h-4" />
               )}
             </button>
-            <Link
-              to="/admin/login"
-              className="ml-4 px-4 py-2 text-xs font-mono text-white/40 hover:text-phosphor transition-colors tracking-widest uppercase"
-            >
-              Admin
-            </Link>
           </nav>
 
           {/* Mobile Hamburger Button */}
@@ -136,17 +130,6 @@ export default function Navbar() {
                 {link.label}
               </NavLink>
             ))}
-
-            {/* Divider */}
-            <div className="my-2 h-px bg-white/10" />
-
-            {/* Admin Link */}
-            <Link
-              to="/admin/login"
-              className="block px-4 py-3 text-xs font-mono text-white/50 hover:text-white hover:bg-white/10 transition-colors tracking-widest uppercase rounded-lg"
-            >
-              Admin Panel
-            </Link>
           </nav>
         </div>
       )}

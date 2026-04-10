@@ -11,7 +11,7 @@
  * WHY:  A compelling hero section immediately communicates who you are
  *       and creates a memorable first impression.
  */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
@@ -23,6 +23,7 @@ import {
   Mail,
   ChevronDown,
 } from "lucide-react";
+import { resumeAPI } from "../../utils/api";
 
 const containerVariants = {
   hidden: {},
@@ -46,6 +47,21 @@ const stats = [
 ];
 
 export default function HeroSection() {
+  const [resumeUrl, setResumeUrl] = useState("");
+
+  useEffect(() => {
+    const loadResume = async () => {
+      try {
+        const res = await resumeAPI.getCurrent();
+        setResumeUrl(res.data?.data?.fileUrl || "");
+      } catch {
+        setResumeUrl("");
+      }
+    };
+
+    loadResume();
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
       {/* ── Background elements ──────────────────────────────────────── */}
@@ -118,13 +134,13 @@ export default function HeroSection() {
               Let's Talk
             </Link>
             <a
-              href="/resume.pdf"
+              href={resumeUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-ghost"
+              className={`btn-ghost ${!resumeUrl ? "pointer-events-none opacity-50" : ""}`}
             >
               <Download className="w-4 h-4" />
-              Resume
+              {resumeUrl ? "Resume" : "Resume Unavailable"}
             </a>
           </motion.div>
 

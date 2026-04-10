@@ -15,6 +15,7 @@
 
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -25,6 +26,7 @@ require("dotenv").config();
 const authRoutes = require("./routes/auth");
 const projectRoutes = require("./routes/projects");
 const contactRoutes = require("./routes/contact");
+const resumeRoutes = require("./routes/resume");
 
 const app = express();
 
@@ -97,6 +99,7 @@ app.use("/api/auth/login", authLimiter);
 // ── Body parsing ───────────────────────────────────────────────────────────
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // ── Logging ────────────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== "production") {
@@ -117,6 +120,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/resume", resumeRoutes);
 
 // ── 404 handler ────────────────────────────────────────────────────────────
 app.use("*", (req, res) => {
@@ -155,6 +159,15 @@ app.use((err, req, res, next) => {
     return res
       .status(403)
       .json({ success: false, message: "CORS error: origin not allowed" });
+  }
+
+  if (err.name === "MulterError") {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res
+        .status(400)
+        .json({ success: false, message: "Resume file must be 5MB or less." });
+    }
+    return res.status(400).json({ success: false, message: err.message });
   }
 
   res.status(err.status || 500).json({

@@ -32,6 +32,7 @@ const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
 const AdminMessages = lazy(() => import("./pages/admin/AdminMessages"));
+const AdminResume = lazy(() => import("./pages/admin/AdminResume"));
 
 export default function App() {
   return (
@@ -69,9 +70,13 @@ export default function App() {
               </Route>
 
               {/* ── Admin Routes ─────────────────────────────────────── */}
-              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<AdminLogin />} />
               <Route
-                path="/admin"
+                path="/admin/login"
+                element={<Navigate to="/admin" replace />}
+              />
+              <Route
+                path="/admin/panel"
                 element={
                   <ProtectedRoute>
                     <AdminLayout />
@@ -80,11 +85,12 @@ export default function App() {
               >
                 <Route
                   index
-                  element={<Navigate to="/admin/dashboard" replace />}
+                  element={<Navigate to="/admin/panel/dashboard" replace />}
                 />
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="projects" element={<AdminProjects />} />
                 <Route path="messages" element={<AdminMessages />} />
+                <Route path="resume" element={<AdminResume />} />
               </Route>
 
               {/* ── 404 ──────────────────────────────────────────────── */}

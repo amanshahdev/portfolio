@@ -47,10 +47,26 @@ exports.getProjects = async (req, res) => {
     if (category && category !== "all") filter.category = category;
     if (featured === "true") filter.featured = true;
 
-    let query = Project.find(filter).sort({ order: 1, createdAt: -1 });
-    if (limit) query = query.limit(parseInt(limit));
+    const parsedLimit = Number.parseInt(limit, 10);
+    const safeLimit =
+      Number.isFinite(parsedLimit) && parsedLimit > 0
+        ? Math.min(parsedLimit, 100)
+        : null;
+
+    let query = Project.find(filter)
+      .sort({ order: 1, createdAt: -1 })
+      .select(
+        "title description shortDescription techStack githubLink liveLink imageUrl category featured status order createdAt updatedAt",
+      )
+      .lean();
+
+    if (safeLimit) {
+      query = query.limit(safeLimit);
+    }
 
     const projects = await query;
+
+    res.set("Cache-Control", "public, max-age=60");
 
     res.json({
       success: true,

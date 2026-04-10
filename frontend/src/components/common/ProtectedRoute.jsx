@@ -1,7 +1,7 @@
 /**
  * ProtectedRoute.jsx — Guards admin routes behind JWT authentication.
  *
- * WHAT: Wraps protected routes; redirects unauthenticated visitors to /admin/login.
+ * WHAT: Wraps protected routes; redirects unauthenticated visitors to /admin.
  * HOW:  Reads isAuthenticated from AuthContext. Shows a loader while the
  *       context is still initialising (prevents flash-redirect on page refresh).
  * WHY:  Centralised guard means individual admin pages don't need auth checks.
@@ -18,7 +18,7 @@ export default function ProtectedRoute({ children }) {
   if (loading) return <PageLoader />;
 
   if (!isAuthenticated) {
-    return <Navigate to="/admin/login" state={{ from: location }} replace />;
+    return <Navigate to="/admin" state={{ from: location }} replace />;
   }
 
   return children;

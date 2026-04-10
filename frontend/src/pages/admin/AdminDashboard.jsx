@@ -168,7 +168,7 @@ export default function AdminDashboard() {
               Recent Messages
             </h2>
             <Link
-              to="/admin/messages"
+              to="/admin/panel/messages"
               className="text-xs font-mono text-phosphor hover:text-phosphor-dim flex items-center gap-1 transition-colors"
             >
               View all <ArrowRight className="w-3 h-3" />
@@ -193,7 +193,7 @@ export default function AdminDashboard() {
               {recentMessages.map((msg) => (
                 <Link
                   key={msg._id}
-                  to="/admin/messages"
+                  to="/admin/panel/messages"
                   className="flex items-start gap-4 px-6 py-4 hover:bg-surface-1 transition-colors duration-200 group"
                 >
                   <div className="w-8 h-8 rounded-full bg-surface-2 flex items-center justify-center text-sm flex-shrink-0 mt-0.5">
@@ -233,7 +233,7 @@ export default function AdminDashboard() {
           </h2>
 
           <Link
-            to="/admin/projects"
+            to="/admin/panel/projects"
             className="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-2 transition-colors duration-200 group"
           >
             <div className="w-8 h-8 rounded-lg bg-phosphor/10 border border-phosphor/20 flex items-center justify-center group-hover:bg-phosphor/20 transition-colors">
@@ -249,7 +249,7 @@ export default function AdminDashboard() {
           </Link>
 
           <Link
-            to="/admin/messages"
+            to="/admin/panel/messages"
             className="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-2 transition-colors duration-200 group"
           >
             <div className="w-8 h-8 rounded-lg bg-aurora/10 border border-aurora/20 flex items-center justify-center group-hover:bg-aurora/20 transition-colors">
