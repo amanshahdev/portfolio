@@ -6,8 +6,9 @@ const { protect } = require("../middleware/auth");
 const { getResume, uploadResume } = require("../controllers/resumeController");
 
 const router = express.Router();
+const backendRootDir = path.resolve(__dirname, "..");
 
-const uploadsDir = path.join(process.cwd(), "uploads", "resumes");
+const uploadsDir = path.join(backendRootDir, "uploads", "resumes");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }

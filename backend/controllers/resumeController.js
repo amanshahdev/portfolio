@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const Resume = require("../models/Resume");
+const backendRootDir = path.resolve(__dirname, "..");
 
 function buildPublicResumeUrl(req, filePath) {
   const normalized = filePath.replace(/\\/g, "/");
@@ -54,7 +55,8 @@ exports.uploadResume = async (req, res) => {
     const existing = await Resume.findOne({ key: "default" });
 
     if (existing?.filePath) {
-      const oldAbsolutePath = path.join(process.cwd(), existing.filePath);
+      const relativeFilePath = existing.filePath.replace(/^[/\\]+/, "");
+      const oldAbsolutePath = path.join(backendRootDir, relativeFilePath);
       if (fs.existsSync(oldAbsolutePath)) {
         fs.unlinkSync(oldAbsolutePath);
       }
@@ -64,7 +66,7 @@ exports.uploadResume = async (req, res) => {
       key: "default",
       originalName: req.file.originalname,
       fileName: req.file.filename,
-      filePath: path.join("uploads", "resumes", req.file.filename),
+      filePath: path.posix.join("uploads", "resumes", req.file.filename),
       mimeType: req.file.mimetype,
       size: req.file.size,
       uploadedAt: new Date(),

@@ -29,6 +29,8 @@ const contactRoutes = require("./routes/contact");
 const resumeRoutes = require("./routes/resume");
 
 const app = express();
+const backendUploadsDir = path.join(__dirname, "uploads");
+const legacyUploadsDir = path.join(process.cwd(), "uploads");
 
 // ── Security middleware ────────────────────────────────────────────────────
 app.use(helmet());
@@ -99,7 +101,12 @@ app.use("/api/auth/login", authLimiter);
 // ── Body parsing ───────────────────────────────────────────────────────────
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use("/uploads", express.static(backendUploadsDir));
+
+// Backward compatibility for files uploaded when cwd differed.
+if (path.resolve(legacyUploadsDir) !== path.resolve(backendUploadsDir)) {
+  app.use("/uploads", express.static(legacyUploadsDir));
+}
 
 // ── Logging ────────────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== "production") {
