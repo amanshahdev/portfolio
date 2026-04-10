@@ -9,6 +9,11 @@ function buildPublicResumeUrl(req, filePath) {
   return `${proto}://${req.get("host")}/${normalized}`;
 }
 
+function resolveResumeAbsolutePath(filePath = "") {
+  const relativeFilePath = filePath.replace(/^[/\\]+/, "");
+  return path.join(backendRootDir, relativeFilePath);
+}
+
 exports.getResume = async (req, res) => {
   try {
     const resume = await Resume.findOne({ key: "default" }).lean();
@@ -17,6 +22,14 @@ exports.getResume = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Resume not uploaded yet.",
+      });
+    }
+
+    const absolutePath = resolveResumeAbsolutePath(resume.filePath);
+    if (!fs.existsSync(absolutePath)) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume file is missing. Please upload a new resume.",
       });
     }
 
@@ -55,8 +68,7 @@ exports.uploadResume = async (req, res) => {
     const existing = await Resume.findOne({ key: "default" });
 
     if (existing?.filePath) {
-      const relativeFilePath = existing.filePath.replace(/^[/\\]+/, "");
-      const oldAbsolutePath = path.join(backendRootDir, relativeFilePath);
+      const oldAbsolutePath = resolveResumeAbsolutePath(existing.filePath);
       if (fs.existsSync(oldAbsolutePath)) {
         fs.unlinkSync(oldAbsolutePath);
       }
