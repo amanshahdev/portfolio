@@ -19,6 +19,15 @@ function resolveResumeAbsolutePath(filePath = "") {
   return path.join(backendRootDir, relativeFilePath);
 }
 
+function getBinaryLength(binary) {
+  if (!binary) return 0;
+  if (Buffer.isBuffer(binary)) return binary.length;
+  if (typeof binary.length === "number") return binary.length;
+  if (typeof binary.length === "function") return binary.length();
+  if (typeof binary.byteLength === "number") return binary.byteLength;
+  return 0;
+}
+
 async function persistFileDataIfMissing(resumeId, absolutePath) {
   try {
     const fileData = fs.readFileSync(absolutePath);
@@ -30,9 +39,7 @@ async function persistFileDataIfMissing(resumeId, absolutePath) {
 
 exports.getResume = async (req, res) => {
   try {
-    const resume = await Resume.findOne({ key: "default" })
-      .select("+fileData")
-      .lean();
+    const resume = await Resume.findOne({ key: "default" }).select("+fileData");
 
     if (!resume) {
       return res.status(404).json({
@@ -41,9 +48,7 @@ exports.getResume = async (req, res) => {
       });
     }
 
-    const hasInlineData = Boolean(
-      resume.fileData && resume.fileData.length > 0,
-    );
+    const hasInlineData = getBinaryLength(resume.fileData) > 0;
     const absolutePath = resume.filePath
       ? resolveResumeAbsolutePath(resume.filePath)
       : "";
@@ -96,7 +101,7 @@ exports.downloadResume = async (req, res) => {
       });
     }
 
-    if (resume.fileData && resume.fileData.length > 0) {
+    if (getBinaryLength(resume.fileData) > 0) {
       res.setHeader(
         "Content-Type",
         resume.mimeType || "application/octet-stream",
