@@ -25,14 +25,27 @@ function ProjectCard({ project, index }) {
   const navigate = useNavigate();
 
   const categoryColors = {
-    fullstack: "#00ff88",
+    fullstack: "rgb(var(--phosphor-rgb))",
     frontend: "#38bdf8",
     backend: "#a855f7",
     mobile: "#f59e0b",
     other: "#6b7280",
   };
 
-  const color = categoryColors[project.category] || "#00ff88";
+  const isAccentCategory = project.category === "fullstack";
+  const color = categoryColors[project.category] || "rgb(var(--phosphor-rgb))";
+  const chipBg = isAccentCategory
+    ? "rgba(var(--phosphor-rgb),0.09)"
+    : `${color}15`;
+  const chipBorder = isAccentCategory
+    ? "rgba(var(--phosphor-rgb),0.2)"
+    : `${color}30`;
+  const lineColor = isAccentCategory
+    ? "rgba(var(--phosphor-rgb),0.38)"
+    : `${color}60`;
+  const glowColor = isAccentCategory
+    ? "rgba(var(--phosphor-rgb),0.08)"
+    : `${color}08`;
   const openDetails = () => navigate(`/projects/${project._id}`);
 
   return (
@@ -63,7 +76,7 @@ function ProjectCard({ project, index }) {
       <motion.div
         className="absolute top-0 left-0 right-0 h-px"
         style={{
-          background: `linear-gradient(90deg, transparent, ${color}60, transparent)`,
+          background: `linear-gradient(90deg, transparent, ${lineColor}, transparent)`,
         }}
         initial={{ scaleX: 0, opacity: 0 }}
         animate={inView ? { scaleX: 1, opacity: 1 } : {}}
@@ -74,7 +87,7 @@ function ProjectCard({ project, index }) {
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: `radial-gradient(600px at 50% 0%, ${color}08 0%, transparent 70%)`,
+          background: `radial-gradient(600px at 50% 0%, ${glowColor} 0%, transparent 70%)`,
         }}
       />
 
@@ -85,8 +98,8 @@ function ProjectCard({ project, index }) {
             className="text-xs font-mono uppercase tracking-widest px-2.5 py-1 rounded-full"
             style={{
               color: color,
-              background: `${color}15`,
-              border: `1px solid ${color}30`,
+              background: chipBg,
+              border: `1px solid ${chipBorder}`,
             }}
           >
             {project.category}

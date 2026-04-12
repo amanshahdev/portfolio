@@ -28,7 +28,7 @@ const categories = [
 ];
 
 const categoryColors = {
-  fullstack: "#00ff88",
+  fullstack: "rgb(var(--phosphor-rgb))",
   frontend: "#38bdf8",
   backend: "#a855f7",
   mobile: "#f59e0b",
@@ -36,7 +36,11 @@ const categoryColors = {
 };
 
 const statusColors = {
-  completed: { text: "#00ff88", bg: "rgba(0,255,136,0.1)", label: "Completed" },
+  completed: {
+    text: "rgb(var(--phosphor-rgb))",
+    bg: "rgba(var(--phosphor-rgb),0.1)",
+    label: "Completed",
+  },
   "in-progress": {
     text: "#f59e0b",
     bg: "rgba(245,158,11,0.1)",
@@ -48,7 +52,14 @@ const statusColors = {
 function ProjectCard({ project, index }) {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
   const navigate = useNavigate();
-  const color = categoryColors[project.category] || "#00ff88";
+  const isAccentCategory = project.category === "fullstack";
+  const color = categoryColors[project.category] || "rgb(var(--phosphor-rgb))";
+  const chipBg = isAccentCategory
+    ? "rgba(var(--phosphor-rgb),0.09)"
+    : `${color}15`;
+  const chipBorder = isAccentCategory
+    ? "rgba(var(--phosphor-rgb),0.2)"
+    : `${color}25`;
   const status = statusColors[project.status] || statusColors.completed;
   const openDetails = () => navigate(`/projects/${project._id}`);
 
@@ -88,8 +99,8 @@ function ProjectCard({ project, index }) {
             className="text-xs font-mono uppercase tracking-wider px-2 py-1 rounded-full"
             style={{
               color: color,
-              background: `${color}15`,
-              border: `1px solid ${color}25`,
+              background: chipBg,
+              border: `1px solid ${chipBorder}`,
             }}
           >
             {project.category}

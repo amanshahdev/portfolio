@@ -490,7 +490,7 @@ export default function AdminProjects() {
   };
 
   const categoryColors = {
-    fullstack: "#00ff88",
+    fullstack: "rgb(var(--phosphor-rgb))",
     frontend: "#38bdf8",
     backend: "#a855f7",
     mobile: "#f59e0b",

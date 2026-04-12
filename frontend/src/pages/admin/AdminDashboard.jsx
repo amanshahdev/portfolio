@@ -98,7 +98,7 @@ export default function AdminDashboard() {
       icon: FolderOpen,
       label: "Total Projects",
       value: stats.totalProjects,
-      color: "#00ff88",
+      color: "rgb(var(--phosphor-rgb))",
       delay: 0,
     },
     {

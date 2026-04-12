@@ -59,8 +59,10 @@
   --void-1-rgb: 237 242 249;
   --void-2-rgb: 230 236 245;
   --void-3-rgb: 221 228 239;
-  --phosphor-rgb: 0 166 99;
-  --phosphor-dim-rgb: 0 140 84;
+  --phosphor-rgb: 11 122 75;
+  --phosphor-dim-rgb: 9 100 63;
+  --phosphor: #0b7a4b;
+  --phosphor-dim: #09643f;
   --aurora-rgb: 109 40 217;
   --aurora-2-rgb: 147 51 234;
   --plasma-rgb: 217 119 6;
@@ -77,7 +79,7 @@
   --surface-3: rgba(15, 23, 42, 0.12);
   --border-1: rgba(15, 23, 42, 0.1);
   --border-2: rgba(15, 23, 42, 0.18);
-  --phosphor-glow: rgba(0, 166, 99, 0.12);
+  --phosphor-glow: rgba(11, 122, 75, 0.14);
   --toast-bg: #f8fafc;
   --toast-text: rgba(15, 23, 42, 0.95);
   --toast-border: rgba(15, 23, 42, 0.12);
@@ -136,7 +138,11 @@ body {
 }
 
 .text-gradient-phosphor {
-  background: linear-gradient(135deg, #00ff88 0%, #00cc6e 100%);
+  background: linear-gradient(
+    135deg,
+    rgb(var(--phosphor-rgb)) 0%,
+    rgb(var(--phosphor-dim-rgb)) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

@@ -22,7 +22,9 @@ const services = [
     title: "Full-Stack Development",
     description:
       "End-to-end web applications with React frontends and Node.js backends, designed to scale.",
-    color: "#00ff88",
+    color: "rgb(var(--phosphor-rgb))",
+    softBg: "rgba(var(--phosphor-rgb),0.09)",
+    softBorder: "rgba(var(--phosphor-rgb),0.2)",
   },
 ];
 
@@ -45,8 +47,8 @@ function ServicesSection() {
               <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-300"
                 style={{
-                  background: `${service.color}15`,
-                  border: `1px solid ${service.color}30`,
+                  background: service.softBg,
+                  border: `1px solid ${service.softBorder}`,
                 }}
               >
                 <service.icon

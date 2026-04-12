@@ -5,7 +5,7 @@ import { ArrowLeft, ExternalLink, Github, Loader2 } from "lucide-react";
 import { projectsAPI } from "../utils/api";
 
 const categoryColors = {
-  fullstack: "#00ff88",
+  fullstack: "rgb(var(--phosphor-rgb))",
   frontend: "#38bdf8",
   backend: "#a855f7",
   mobile: "#f59e0b",
@@ -13,7 +13,11 @@ const categoryColors = {
 };
 
 const statusColors = {
-  completed: { text: "#00ff88", bg: "rgba(0,255,136,0.1)", label: "Completed" },
+  completed: {
+    text: "rgb(var(--phosphor-rgb))",
+    bg: "rgba(var(--phosphor-rgb),0.1)",
+    label: "Completed",
+  },
   "in-progress": {
     text: "#f59e0b",
     bg: "rgba(245,158,11,0.1)",
@@ -38,7 +42,8 @@ export default function ProjectDetail() {
       .getOne(id)
       .then((res) => setProject(res.data?.data || null))
       .catch((err) => {
-        const msg = err.response?.data?.message || "Unable to load project details.";
+        const msg =
+          err.response?.data?.message || "Unable to load project details.";
         setError(msg);
       })
       .finally(() => setLoading(false));
@@ -65,7 +70,9 @@ export default function ProjectDetail() {
           </Link>
 
           <div className="card text-center py-16">
-            <p className="text-white/60 mb-4">{error || "Project not found."}</p>
+            <p className="text-white/60 mb-4">
+              {error || "Project not found."}
+            </p>
             <Link to="/projects" className="btn-secondary">
               View all projects
             </Link>
@@ -75,7 +82,15 @@ export default function ProjectDetail() {
     );
   }
 
-  const categoryColor = categoryColors[project.category] || "#00ff88";
+  const isAccentCategory = project.category === "fullstack";
+  const categoryColor =
+    categoryColors[project.category] || "rgb(var(--phosphor-rgb))";
+  const categoryBg = isAccentCategory
+    ? "rgba(var(--phosphor-rgb),0.09)"
+    : `${categoryColor}15`;
+  const categoryBorder = isAccentCategory
+    ? "rgba(var(--phosphor-rgb),0.2)"
+    : `${categoryColor}25`;
   const status = statusColors[project.status] || statusColors.completed;
 
   return (
@@ -100,8 +115,8 @@ export default function ProjectDetail() {
               className="text-xs font-mono uppercase tracking-wider px-2 py-1 rounded-full"
               style={{
                 color: categoryColor,
-                background: `${categoryColor}15`,
-                border: `1px solid ${categoryColor}25`,
+                background: categoryBg,
+                border: `1px solid ${categoryBorder}`,
               }}
             >
               {project.category}

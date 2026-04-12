@@ -9,13 +9,6 @@ import React, {
 const THEME_KEY = "portfolio-theme";
 const ThemeContext = createContext(null);
 
-function getSystemTheme() {
-  if (typeof window === "undefined") return "dark";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-}
-
 function getInitialTheme() {
   if (typeof window === "undefined") return "dark";
 
@@ -24,7 +17,7 @@ function getInitialTheme() {
     return storedTheme;
   }
 
-  return getSystemTheme();
+  return "dark";
 }
 
 export function ThemeProvider({ children }) {
@@ -36,19 +29,6 @@ export function ThemeProvider({ children }) {
     root.style.colorScheme = theme;
     window.localStorage.setItem(THEME_KEY, theme);
   }, [theme]);
-
-  useEffect(() => {
-    const hasStoredTheme = window.localStorage.getItem(THEME_KEY);
-    if (hasStoredTheme) return undefined;
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (event) => {
-      setTheme(event.matches ? "dark" : "light");
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
 
   const value = useMemo(
     () => ({

@@ -78,7 +78,8 @@ export default function HeroSection() {
       <div
         className="absolute bottom-1/4 -right-20 md:-right-40 w-[250px] md:w-[500px] h-[250px] md:h-[500px] rounded-full opacity-[0.07]"
         style={{
-          background: "radial-gradient(circle, #00ff88 0%, transparent 70%)",
+          background:
+            "radial-gradient(circle, rgb(var(--phosphor-rgb)) 0%, transparent 70%)",
           animation: "float 10s ease-in-out infinite reverse",
         }}
       />

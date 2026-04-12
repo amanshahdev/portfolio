@@ -18,7 +18,8 @@ import { useInView } from "react-intersection-observer";
 const skillCategories = [
   {
     title: "Frontend",
-    color: "#00ff88",
+    color: "rgb(var(--phosphor-rgb))",
+    softColor: "rgba(var(--phosphor-rgb),0.55)",
     skills: [
       { name: "React.js", level: 95 },
       { name: "HTML/CSS", level: 90 },
@@ -28,6 +29,7 @@ const skillCategories = [
   {
     title: "Backend",
     color: "#a855f7",
+    softColor: "rgba(168,85,247,0.55)",
     skills: [
       { name: "Node.js/Express.js", level: 93 },
       { name: "Python", level: 85 },
@@ -39,6 +41,7 @@ const skillCategories = [
   {
     title: "Tools & Deployment",
     color: "#38bdf8",
+    softColor: "rgba(56,189,248,0.55)",
     skills: [
       { name: "Git", level: 90 },
       { name: "MySQL", level: 88 },
@@ -65,7 +68,7 @@ const techStack = [
   "Linux",
 ];
 
-function SkillBar({ name, level, color, index }) {
+function SkillBar({ name, level, color, softColor, index }) {
   const { ref, inView } = useInView({ threshold: 0.3, triggerOnce: true });
 
   return (
@@ -83,7 +86,9 @@ function SkillBar({ name, level, color, index }) {
       <div className="h-1.5 bg-surface-2 rounded-full overflow-hidden">
         <motion.div
           className="h-full rounded-full"
-          style={{ background: `linear-gradient(90deg, ${color}88, ${color})` }}
+          style={{
+            background: `linear-gradient(90deg, ${softColor}, ${color})`,
+          }}
           initial={{ width: 0 }}
           animate={inView ? { width: `${level}%` } : { width: 0 }}
           transition={{
@@ -158,6 +163,7 @@ export default function SkillsSection() {
                     key={skill.name}
                     {...skill}
                     color={category.color}
+                    softColor={category.softColor}
                     index={idx}
                   />
                 ))}
