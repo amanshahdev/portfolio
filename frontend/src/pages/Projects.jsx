@@ -25,6 +25,7 @@ const categories = [
   { id: "fullstack", label: "Full-Stack" },
   { id: "frontend", label: "Frontend" },
   { id: "backend", label: "Backend" },
+  { id: "mobile", label: "Mobile" },
 ];
 
 const categoryColors = {

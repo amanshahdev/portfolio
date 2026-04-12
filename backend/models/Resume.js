@@ -32,6 +32,10 @@ const resumeSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    fileData: {
+      type: Buffer,
+      select: false,
+    },
     uploadedAt: {
       type: Date,
       default: Date.now,

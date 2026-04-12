@@ -1,31 +1,15 @@
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 const { protect } = require("../middleware/auth");
-const { getResume, uploadResume } = require("../controllers/resumeController");
+const {
+  getResume,
+  uploadResume,
+  downloadResume,
+} = require("../controllers/resumeController");
 
 const router = express.Router();
-const backendRootDir = path.resolve(__dirname, "..");
-
-const uploadsDir = path.join(backendRootDir, "uploads", "resumes");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadsDir),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    const base = path
-      .basename(file.originalname, ext)
-      .replace(/[^a-zA-Z0-9-_]/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "")
-      .toLowerCase();
-    cb(null, `${Date.now()}-${base || "resume"}${ext}`);
-  },
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
@@ -51,6 +35,7 @@ const upload = multer({
 });
 
 router.get("/", getResume);
+router.get("/file", downloadResume);
 router.post("/", protect, upload.single("resume"), uploadResume);
 
 module.exports = router;
