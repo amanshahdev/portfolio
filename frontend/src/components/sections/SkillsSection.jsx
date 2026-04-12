@@ -143,8 +143,14 @@ export default function SkillsSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: catIdx * 0.15, duration: 0.6 }}
-              className="card"
+              className="card relative overflow-hidden"
             >
+              <div
+                className="absolute inset-x-0 top-0 h-1"
+                style={{
+                  background: `linear-gradient(90deg, ${category.softColor}, ${category.color})`,
+                }}
+              />
               <div className="flex items-center gap-2 mb-6">
                 <div
                   className="w-2 h-2 rounded-full"
