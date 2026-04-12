@@ -18,8 +18,8 @@ import { useInView } from "react-intersection-observer";
 const skillCategories = [
   {
     title: "Frontend",
-    color: "rgb(var(--phosphor-rgb))",
-    softColor: "rgba(var(--phosphor-rgb),0.55)",
+    color: "#00ff88",
+    softColor: "rgba(0,255,136,0.55)",
     skills: [
       { name: "React.js", level: 95 },
       { name: "HTML/CSS", level: 90 },
