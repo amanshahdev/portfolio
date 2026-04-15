@@ -130,7 +130,7 @@ export default function About() {
   const resumeButtonLabel = isResumeLoading
     ? "Loading CV..."
     : isResumeReady
-      ? "Download CV"
+      ? "Download Resume"
       : "CV Unavailable";
 
   return (
