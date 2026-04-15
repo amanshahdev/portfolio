@@ -108,6 +108,7 @@ function AnimatedSection({ children, delay = 0 }) {
 
 export default function About() {
   const [resumeUrl, setResumeUrl] = useState("");
+  const [isResumeLoading, setIsResumeLoading] = useState(true);
 
   useEffect(() => {
     const loadResume = async () => {
@@ -116,11 +117,21 @@ export default function About() {
         setResumeUrl(res.data?.data?.fileUrl || "");
       } catch {
         setResumeUrl("");
+      } finally {
+        setIsResumeLoading(false);
       }
     };
 
     loadResume();
   }, []);
+
+  const isResumeReady = !!resumeUrl;
+  const isResumeDisabled = isResumeLoading || !isResumeReady;
+  const resumeButtonLabel = isResumeLoading
+    ? "Loading CV..."
+    : isResumeReady
+      ? "Download CV"
+      : "CV Unavailable";
 
   return (
     <div className="min-h-screen pt-28 pb-20">
@@ -157,10 +168,11 @@ export default function About() {
                 href={resumeUrl || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`btn-primary ${!resumeUrl ? "pointer-events-none opacity-50" : ""}`}
+                className={`btn-primary ${isResumeDisabled ? "pointer-events-none opacity-50" : ""}`}
+                aria-disabled={isResumeDisabled}
               >
                 <Download className="w-4 h-4" />
-                {resumeUrl ? "Download CV" : "CV Unavailable"}
+                {resumeButtonLabel}
               </a>
               <Link to="/contact" className="btn-secondary">
                 Get in Touch

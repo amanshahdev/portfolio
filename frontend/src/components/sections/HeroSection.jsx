@@ -48,6 +48,7 @@ const stats = [
 
 export default function HeroSection() {
   const [resumeUrl, setResumeUrl] = useState("");
+  const [isResumeLoading, setIsResumeLoading] = useState(true);
 
   useEffect(() => {
     const loadResume = async () => {
@@ -56,11 +57,21 @@ export default function HeroSection() {
         setResumeUrl(res.data?.data?.fileUrl || "");
       } catch {
         setResumeUrl("");
+      } finally {
+        setIsResumeLoading(false);
       }
     };
 
     loadResume();
   }, []);
+
+  const isResumeReady = !!resumeUrl;
+  const isResumeDisabled = isResumeLoading || !isResumeReady;
+  const resumeButtonLabel = isResumeLoading
+    ? "Loading Resume..."
+    : isResumeReady
+      ? "Resume"
+      : "Resume Unavailable";
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
@@ -138,10 +149,11 @@ export default function HeroSection() {
               href={resumeUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className={`btn-ghost ${!resumeUrl ? "pointer-events-none opacity-50" : ""}`}
+              className={`btn-ghost ${isResumeDisabled ? "pointer-events-none opacity-50" : ""}`}
+              aria-disabled={isResumeDisabled}
             >
               <Download className="w-4 h-4" />
-              {resumeUrl ? "Resume" : "Resume Unavailable"}
+              {resumeButtonLabel}
             </a>
           </motion.div>
 
