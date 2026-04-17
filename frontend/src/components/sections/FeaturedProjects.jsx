@@ -17,8 +17,10 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github, ArrowRight, Loader2 } from "lucide-react";
 import { projectsAPI } from "../../utils/api";
-
-const FEATURED_CACHE_KEY = "portfolio_featured_projects_cache_v1";
+import {
+  readCachedFeaturedProjects,
+  writeCachedFeaturedProjects,
+} from "../../utils/contentCache";
 
 function ProjectCard({ project, index }) {
   const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true });
@@ -164,8 +166,10 @@ function ProjectCard({ project, index }) {
 }
 
 export default function FeaturedProjects() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState(() => readCachedFeaturedProjects());
+  const [loading, setLoading] = useState(
+    () => readCachedFeaturedProjects().length === 0,
+  );
   const [error, setError] = useState("");
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
 
@@ -179,42 +183,24 @@ export default function FeaturedProjects() {
       const res = await projectsAPI.getAll({ featured: true, limit: 3 });
       const nextProjects = res.data?.data || [];
       setProjects(nextProjects);
-      localStorage.setItem(FEATURED_CACHE_KEY, JSON.stringify(nextProjects));
+      writeCachedFeaturedProjects(nextProjects);
     } catch (err) {
       const msg =
         err.response?.data?.message || "Could not load featured projects.";
       setError(msg);
-      const cached = localStorage.getItem(FEATURED_CACHE_KEY);
-      if (cached) {
-        try {
-          const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed)) {
-            setProjects(parsed);
-          }
-        } catch {
-          // Ignore invalid cache payloads.
-        }
-      }
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const cached = localStorage.getItem(FEATURED_CACHE_KEY);
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setProjects(parsed);
-          setLoading(false);
-        }
-      } catch {
-        // Ignore invalid cache payloads.
-      }
+    const cached = readCachedFeaturedProjects();
+    if (cached.length > 0) {
+      setProjects(cached);
+      setLoading(false);
     }
 
-    fetchFeaturedProjects({ withSpinner: !cached });
+    fetchFeaturedProjects({ withSpinner: cached.length === 0 });
   }, []);
 
   return (

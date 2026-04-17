@@ -10,6 +10,11 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { resumeAPI } from "../../utils/api";
+import {
+  clearCachedResume,
+  readCachedResume,
+  writeCachedResume,
+} from "../../utils/contentCache";
 
 function formatFileSize(bytes = 0) {
   if (bytes < 1024) return `${bytes} B`;
@@ -18,8 +23,8 @@ function formatFileSize(bytes = 0) {
 }
 
 export default function AdminResume() {
-  const [resume, setResume] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [resume, setResume] = useState(() => readCachedResume());
+  const [loading, setLoading] = useState(() => !readCachedResume());
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
@@ -29,10 +34,13 @@ export default function AdminResume() {
     try {
       setError("");
       const res = await resumeAPI.getCurrent();
-      setResume(res.data?.data || null);
+      const nextResume = res.data?.data || null;
+      setResume(nextResume);
+      writeCachedResume(nextResume);
     } catch (err) {
       if (err.response?.status === 404) {
         setResume(null);
+        clearCachedResume();
         return;
       }
       const msg =
@@ -56,7 +64,9 @@ export default function AdminResume() {
     setUploading(true);
     try {
       const res = await resumeAPI.upload(file);
-      setResume(res.data?.data || null);
+      const nextResume = res.data?.data || null;
+      setResume(nextResume);
+      writeCachedResume(nextResume);
       setError("");
       toast.success("Resume uploaded successfully.");
     } catch (err) {

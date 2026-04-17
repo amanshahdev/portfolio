@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, ExternalLink, Github, Loader2 } from "lucide-react";
 import { projectsAPI } from "../utils/api";
+import { readCachedProjects, removeCachedProject } from "../utils/contentCache";
 
 const categoryColors = {
   fullstack: "rgb(var(--phosphor-rgb))",
@@ -28,14 +29,26 @@ const statusColors = {
 
 export default function ProjectDetail() {
   const { id } = useParams();
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const cachedProject =
+    readCachedProjects().find((project) => project._id === id) || null;
+  const [project, setProject] = useState(cachedProject);
+  const [loading, setLoading] = useState(!cachedProject);
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (!id) return;
 
-    setLoading(true);
+    const nextCachedProject =
+      readCachedProjects().find((item) => item._id === id) || null;
+
+    if (nextCachedProject) {
+      setProject(nextCachedProject);
+      setLoading(false);
+      setError("");
+    } else {
+      setLoading(true);
+    }
+
     setError("");
 
     projectsAPI
@@ -44,7 +57,16 @@ export default function ProjectDetail() {
       .catch((err) => {
         const msg =
           err.response?.data?.message || "Unable to load project details.";
-        setError(msg);
+        if (err.response?.status === 404) {
+          removeCachedProject(id);
+          setProject(null);
+          setError(msg);
+          return;
+        }
+
+        if (!nextCachedProject) {
+          setError(msg);
+        }
       })
       .finally(() => setLoading(false));
   }, [id]);

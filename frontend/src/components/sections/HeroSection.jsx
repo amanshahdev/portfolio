@@ -24,6 +24,11 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { resumeAPI } from "../../utils/api";
+import {
+  clearCachedResume,
+  readCachedResume,
+  writeCachedResume,
+} from "../../utils/contentCache";
 
 const containerVariants = {
   hidden: {},
@@ -47,20 +52,33 @@ const stats = [
 ];
 
 export default function HeroSection() {
-  const [resumeUrl, setResumeUrl] = useState("");
-  const [isResumeLoading, setIsResumeLoading] = useState(true);
+  const cachedResume = readCachedResume();
+  const [resumeUrl, setResumeUrl] = useState(cachedResume?.fileUrl || "");
+  const [isResumeLoading, setIsResumeLoading] = useState(
+    !cachedResume?.fileUrl,
+  );
 
   useEffect(() => {
     const loadResume = async () => {
       try {
         const res = await resumeAPI.getCurrent();
-        setResumeUrl(res.data?.data?.fileUrl || "");
-      } catch {
-        setResumeUrl("");
+        const nextResume = res.data?.data || null;
+        writeCachedResume(nextResume);
+        setResumeUrl(nextResume?.fileUrl || "");
+      } catch (err) {
+        if (err.response?.status === 404) {
+          clearCachedResume();
+          setResumeUrl("");
+        }
       } finally {
         setIsResumeLoading(false);
       }
     };
+
+    if (cachedResume?.fileUrl) {
+      setResumeUrl(cachedResume.fileUrl);
+      setIsResumeLoading(false);
+    }
 
     loadResume();
   }, []);

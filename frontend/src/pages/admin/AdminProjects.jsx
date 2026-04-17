@@ -29,6 +29,12 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { projectsAPI } from "../../utils/api";
+import {
+  readCachedProjects,
+  writeCachedProjects,
+  upsertCachedProject,
+  removeCachedProject,
+} from "../../utils/contentCache";
 
 const EMPTY_PROJECT = {
   title: "",
@@ -111,12 +117,18 @@ function ProjectFormModal({ project, onClose, onSave }) {
 
     setLoading(true);
     try {
+      let savedProject = null;
       if (isEditing) {
-        await projectsAPI.update(project._id, form);
+        const res = await projectsAPI.update(project._id, form);
+        savedProject = res.data?.data || null;
         toast.success("Project updated successfully!");
       } else {
-        await projectsAPI.create(form);
+        const res = await projectsAPI.create(form);
+        savedProject = res.data?.data || null;
         toast.success("Project created successfully!");
+      }
+      if (savedProject) {
+        upsertCachedProject(savedProject);
       }
       onSave();
     } catch (err) {
@@ -453,8 +465,10 @@ function DeleteConfirm({ project, onCancel, onConfirm, loading }) {
 
 // ── Main Page ──────────────────────────────────────────────────────────────
 export default function AdminProjects() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState(() => readCachedProjects());
+  const [loading, setLoading] = useState(
+    () => readCachedProjects().length === 0,
+  );
   const [modalProject, setModalProject] = useState(null); // null=closed, false=new, obj=edit
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -462,7 +476,9 @@ export default function AdminProjects() {
   const fetchProjects = async () => {
     try {
       const res = await projectsAPI.getAll();
-      setProjects(res.data.data || []);
+      const nextProjects = res.data.data || [];
+      setProjects(nextProjects);
+      writeCachedProjects(nextProjects);
     } catch (err) {
       toast.error("Failed to load projects.");
     } finally {
@@ -471,6 +487,12 @@ export default function AdminProjects() {
   };
 
   useEffect(() => {
+    const cached = readCachedProjects();
+    if (cached.length > 0) {
+      setProjects(cached);
+      setLoading(false);
+    }
+
     fetchProjects();
   }, []);
 
@@ -479,6 +501,7 @@ export default function AdminProjects() {
     setDeleteLoading(true);
     try {
       await projectsAPI.delete(deleteTarget._id);
+      removeCachedProject(deleteTarget._id);
       toast.success("Project deleted.");
       setDeleteTarget(null);
       fetchProjects();

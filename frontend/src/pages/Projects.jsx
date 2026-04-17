@@ -17,8 +17,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github, Loader2, Search, Filter } from "lucide-react";
 import { projectsAPI } from "../utils/api";
-
-const PROJECTS_CACHE_KEY = "portfolio_projects_cache_v1";
+import { readCachedProjects, writeCachedProjects } from "../utils/contentCache";
 
 const categories = [
   { id: "all", label: "All Projects" },
@@ -177,8 +176,10 @@ function ProjectCard({ project, index }) {
 }
 
 export default function Projects() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState(() => readCachedProjects());
+  const [loading, setLoading] = useState(
+    () => readCachedProjects().length === 0,
+  );
   const [error, setError] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -193,41 +194,23 @@ export default function Projects() {
       const res = await projectsAPI.getAll();
       const nextProjects = res.data?.data || [];
       setProjects(nextProjects);
-      localStorage.setItem(PROJECTS_CACHE_KEY, JSON.stringify(nextProjects));
+      writeCachedProjects(nextProjects);
     } catch (err) {
       const msg = err.response?.data?.message || "Could not load projects.";
       setError(msg);
-      const cached = localStorage.getItem(PROJECTS_CACHE_KEY);
-      if (cached) {
-        try {
-          const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed)) {
-            setProjects(parsed);
-          }
-        } catch {
-          // Ignore invalid cache payloads.
-        }
-      }
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const cached = localStorage.getItem(PROJECTS_CACHE_KEY);
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setProjects(parsed);
-          setLoading(false);
-        }
-      } catch {
-        // Ignore invalid cache payloads.
-      }
+    const cached = readCachedProjects();
+    if (cached.length > 0) {
+      setProjects(cached);
+      setLoading(false);
     }
 
-    fetchProjects({ withSpinner: !cached });
+    fetchProjects({ withSpinner: cached.length === 0 });
   }, []);
 
   const filtered = useMemo(() => {
