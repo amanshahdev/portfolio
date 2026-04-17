@@ -4,7 +4,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Terminal, ArrowUpRight } from "lucide-react";
+import { Github, Linkedin, Mail, Terminal } from "lucide-react";
 
 const socialLinks = [
   { icon: Github, href: "https://github.com/amanshahdev", label: "GitHub" },
@@ -16,13 +16,6 @@ const socialLinks = [
   { icon: Mail, href: "mailto:amanshah.dev@gmail.com", label: "Email" },
 ];
 
-const footerNav = [
-  { path: "/", label: "Home" },
-  { path: "/about", label: "About" },
-  { path: "/projects", label: "Projects" },
-  { path: "/contact", label: "Contact" },
-];
-
 export default function Footer() {
   return (
     <footer className="relative border-t border-border-1 bg-void-1/50 mt-20">
@@ -30,7 +23,7 @@ export default function Footer() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px bg-gradient-to-r from-transparent via-phosphor/20 to-transparent" />
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2.5 group w-fit">
@@ -45,26 +38,6 @@ export default function Footer() {
               Building exceptional digital experiences with clean code and
               thoughtful design.
             </p>
-          </div>
-
-          {/* Navigation */}
-          <div>
-            <p className="text-xs font-mono uppercase tracking-widest text-white/30 mb-4">
-              Navigation
-            </p>
-            <ul className="space-y-2">
-              {footerNav.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-sm text-white/50 hover:text-phosphor transition-colors duration-200 flex items-center gap-1 group"
-                  >
-                    {link.label}
-                    <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* Socials */}

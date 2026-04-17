@@ -233,21 +233,6 @@ export default function About() {
                     </div>
                   ))}
                 </div>
-
-                <div className="pt-4 border-t border-border-1">
-                  <p className="text-xs font-mono text-white/25 uppercase tracking-widest mb-3">
-                    Core Stack
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {["React", "Node.js", "MongoDB", "Vercel", "Render"].map(
-                      (t) => (
-                        <span key={t} className="tag">
-                          {t}
-                        </span>
-                      ),
-                    )}
-                  </div>
-                </div>
               </div>
             </div>
           </AnimatedSection>
