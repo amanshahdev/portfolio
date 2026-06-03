@@ -6,8 +6,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ["'Clash Display'", "sans-serif"],
-        body: ["'Cabinet Grotesk'", "sans-serif"],
+        display: ["'Sora'", "sans-serif"],
+        body: ["'Manrope'", "sans-serif"],
         mono: ["'JetBrains Mono'", "monospace"],
       },
       colors: {

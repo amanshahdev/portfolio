@@ -109,7 +109,7 @@ body {
   background-color: var(--void);
   color: var(--text-primary);
   font-family:
-    "Cabinet Grotesk",
+    "Manrope",
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
@@ -255,7 +255,7 @@ body {
            bg-phosphor text-void transition-all duration-300
            hover:bg-phosphor-dim hover:shadow-phosphor hover:scale-[1.02]
            active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-phosphor/50;
-    font-family: "Cabinet Grotesk", sans-serif;
+    font-family: "Manrope", sans-serif;
   }
 
   .btn-secondary {
@@ -263,7 +263,7 @@ body {
            glass phosphor-border text-phosphor transition-all duration-300
            hover:bg-phosphor-glow hover:shadow-phosphor hover:scale-[1.02]
            active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-phosphor/30;
-    font-family: "Cabinet Grotesk", sans-serif;
+    font-family: "Manrope", sans-serif;
   }
 
   .btn-ghost {
@@ -271,7 +271,7 @@ body {
            text-white/70 transition-all duration-300
            hover:text-white hover:bg-surface-2 hover:scale-[1.02]
            active:scale-[0.98] focus:outline-none;
-    font-family: "Cabinet Grotesk", sans-serif;
+    font-family: "Manrope", sans-serif;
   }
 
   .card {
@@ -284,7 +284,7 @@ body {
            placeholder:text-white/30 text-sm
            focus:outline-none focus:ring-1 focus:ring-phosphor/50 focus:border-phosphor/30
            transition-all duration-300;
-    font-family: "Cabinet Grotesk", sans-serif;
+    font-family: "Manrope", sans-serif;
     background: var(--surface-1);
   }
 
