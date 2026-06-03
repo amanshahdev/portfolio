@@ -46,7 +46,7 @@ export default function App() {
                 background: "var(--toast-bg)",
                 color: "var(--toast-text)",
                 border: "1px solid var(--toast-border)",
-                fontFamily: "'Manrope', sans-serif",
+                fontFamily: "'Cabinet Grotesk', sans-serif",
                 fontSize: "14px",
               },
               success: {
